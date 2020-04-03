@@ -1,6 +1,8 @@
 doctype html
 html
     head
-        title
+        title #{siteName}
+        link(rel="stylesheet", href="/static/styles.css")
     body
         block content
+        script(src="/static/main.js") 
