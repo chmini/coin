@@ -1,0 +1,28 @@
+{
+  "name": "nodejs-env",
+  "version": "1.0.0",
+  "description": "NodeJS Development environment",
+  "main": "init.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chmini/NodeJS-env.git"
+  },
+  "author": "Beelzebulb",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chmini/NodeJS-env/issues"
+  },
+  "homepage": "https://github.com/chmini/NodeJS-env#readme",
+  "dependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.9.0",
+    "express": "^4.17.1"
+  },
+  "scripts": {
+    "start": "nodemon --exec babel-node init.js --delay 2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
