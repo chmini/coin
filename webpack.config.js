@@ -12,7 +12,7 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.(scss)$/,
+        test: /\.(scss|css)$/,
         use: ExtractCSS.extract([
           {
             loader: "css-loader"
