@@ -6,6 +6,7 @@ import morgan from "morgan";
 
 import routes from "./routes";
 import globalRouter from "./routers/globalRouter";
+import apiRouter from "./routers/apiRouter";
 import { localsMiddleware } from "./middlewares";
 
 const app = express();
@@ -21,5 +22,6 @@ app.use(morgan("dev"));
 app.use(localsMiddleware);
 
 app.use(routes.home, globalRouter);
+app.use(routes.api, apiRouter);
 
 export default app;

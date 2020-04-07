@@ -1,0 +1,51 @@
+.Container {
+  display: flex;
+  justify-content: center;
+  .calendar {
+    width: 100%;
+    max-width: 1200px;
+    .fc-day {
+      cursor: pointer;
+    }
+  }
+  .clsAccount {
+    display: none;
+  }
+}
+
+.modal {
+  width: 100%;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.4);
+  .day__container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    .passBtn {
+      margin: 0 30px;
+      font-size: 60px;
+      color: #fff;
+      cursor: pointer;
+    }
+    .day__content {
+      width: 50%;
+      background-color: #fff;
+      .day__column {
+        margin: 10px;
+        display: flex;
+        justify-content: space-between;
+        .btn {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

@@ -1,5 +1,9 @@
 @import "./config/variables";
+@import "./config/reset";
 
-body {
-  background-color: $bg;
-}
+@import "./pages/home";
+@import "./pages/add";
+
+@import "./partials/header";
+
+@import "./main";

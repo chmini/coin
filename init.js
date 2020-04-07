@@ -3,7 +3,7 @@ import app from "./app";
 import dotenv from "dotenv";
 dotenv.config();
 
-import "./models/Test";
+import "./models/Cost";
 
 const PORT = process.env.PORT;
 

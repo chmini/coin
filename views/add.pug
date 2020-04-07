@@ -1,0 +1,22 @@
+extends layouts/main
+
+block content
+    .add__container
+        .add__content
+            form(action="add", method="post")
+                .content__column
+                    span 날짜
+                    input(type="text", name="date", placeholder="날짜", value=`${date}`, readonly)
+                .content__column
+                    span 유형
+                    select(name="type")
+                        each typ in types
+                            option #{typ}
+                .content__column
+                    span 분류
+                    input(type="text", name="group", placeholder="분류")
+                .content__column
+                    span 금액
+                    input(type="text", name="amount", placeholder="금액")
+                .content__column
+                    input(type="submit", value="Go")
