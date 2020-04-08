@@ -2,7 +2,7 @@ import routes from "../routes";
 import Cost from "../models/Cost";
 
 const types = ["현금", "카드"];
-let id;
+let dateId;
 
 const toStringDate = (date) => {
   const day = ["일", "월", "화", "수", "목", "금", "토"];
@@ -29,17 +29,18 @@ export const getAdd = (req, res) => {
   } = req;
   const newDate = new Date(date);
   const objDate = toStringDate(newDate);
-  id = objDate.id;
+  dateId = objDate.id;
   res.render("add", { date: objDate.str, types });
 };
 
 export const postAdd = async (req, res) => {
   const {
-    body: { type, group, amount },
+    body: { incExp, type, group, amount },
   } = req;
   try {
-    const newCost = await Cost.create({
-      date: id,
+    await Cost.create({
+      date: dateId,
+      incExp,
       type,
       group,
       amount,

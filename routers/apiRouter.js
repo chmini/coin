@@ -6,6 +6,6 @@ const apiRouter = express.Router();
 
 //api
 apiRouter.post(routes.getData, getData);
-apiRouter.get(routes.getStrDate, getStrDate);
+apiRouter.post(routes.getStrDate, getStrDate);
 
 export default apiRouter;

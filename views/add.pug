@@ -8,10 +8,14 @@ block content
                     span 날짜
                     input(type="text", name="date", placeholder="날짜", value=`${date}`, readonly)
                 .content__column
+                    span 수입/지출
+                    input(type="radio", name="incExp", value="income")
+                    input(type="radio", name="incExp", value="expend")
+                .content__column
                     span 유형
                     select(name="type")
-                        each typ in types
-                            option #{typ}
+                        each tp in types
+                            option #{tp}
                 .content__column
                     span 분류
                     input(type="text", name="group", placeholder="분류")

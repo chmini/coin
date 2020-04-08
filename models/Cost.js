@@ -5,6 +5,10 @@ const CostSchema = new mongoose.Schema({
     type: String,
     required: "date is required",
   },
+  incExp: {
+    type: String,
+    required: "incExp is required",
+  },
   type: {
     type: String,
     required: "type is required",

@@ -16,9 +16,9 @@ const calendar = new Calendar(calendarEl, {
       titleFormat: { month: "long" },
     },
   },
-  showNonCurrentDates: false,
+  displayEventTime: false,
   dateClick: (info) => {
-    showDetail(info.date);
+    if (calendar.view.type === "dayGridMonth") showDetail(info.date);
   },
 });
 

@@ -1,7 +1,7 @@
 export const getStrDate = async (date) => {
   let result;
   await fetch(`/api/strDate?date=${date}`, {
-    method: "get",
+    method: "post",
   })
     .then((response) => {
       return response.json();

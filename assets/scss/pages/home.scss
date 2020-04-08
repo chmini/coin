@@ -4,8 +4,18 @@
   .calendar {
     width: 100%;
     max-width: 1200px;
-    .fc-day {
+    td {
       cursor: pointer;
+    }
+    .fc-event-container {
+      z-index: -1;
+      .fc-day-grid-event {
+        z-index: -1;
+        .fc-content {
+          z-index: -1;
+          text-align: right;
+        }
+      }
     }
   }
   .clsAccount {

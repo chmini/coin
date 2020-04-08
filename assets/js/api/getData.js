@@ -1,8 +1,5 @@
-import calendar from "../calendar";
-
-const event = [];
-
-const getData = async () => {
+export const getData = async () => {
+  let result;
   await fetch("/api/data", {
     method: "post",
   })
@@ -10,16 +7,7 @@ const getData = async () => {
       return response.json();
     })
     .then(async (json) => {
-      json.forEach((data) => {
-        console.log(data);
-        event.push({ title: data.type, start: data.date });
-      });
-      calendar.addEventSource(event);
+      result = json;
     });
-
-  const eventSources = calendar.getEventSources()[0];
-  const events = eventSources.internalEventSource.meta;
-  //eventsSources.remove();
+  return result;
 };
-
-getData();
