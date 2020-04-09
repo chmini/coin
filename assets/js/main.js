@@ -3,7 +3,6 @@ import "../scss/styles.scss";
 import "./calendar";
 import "./costCal";
 import "./costDay";
-import "./dayStyle";
 
 import "./api/getData";
 import "./api/getStrDate";

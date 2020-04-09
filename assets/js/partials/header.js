@@ -1,8 +1,6 @@
 import calendar from "../calendar";
 import { CreateandPaintCostinCal } from "../costCal";
 import { CreateCostinDay } from "../costDay";
-import { getData } from "../api/getData";
-import cookieParser from "cookie-parser";
 import { getStrDate } from "../api/getStrDate";
 
 const calEl = document.getElementById("jsCalendar");
@@ -13,6 +11,8 @@ const dailyBtn = document.getElementById("jsDailyBtn");
 const calBtn = document.getElementById("jsCalBtn");
 const weeklyBtn = document.getElementById("jsWeeklyBtn");
 const monthlyBtn = document.getElementById("jsMonthlyBtn");
+
+const addBtn = document.getElementById("jsAddBtn_Day");
 
 // Calendar Part show / Account Part hide
 const showCal = () => {
@@ -75,6 +75,8 @@ const init = async () => {
     });
     // Paint Day Events
     document.addEventListener("click", handleDocument);
+
+    addBtn.style.display = "block";
   });
 
   calBtn.addEventListener("click", (e) => {
@@ -89,16 +91,20 @@ const init = async () => {
     });
     // Restore calEvents
     eventSources.refetch();
+
+    addBtn.style.display = "none";
   });
 
   weeklyBtn.addEventListener("click", (e) => {
     showAcc();
     activeBtn(e);
+    addBtn.style.display = "none";
   });
 
   monthlyBtn.addEventListener("click", (e) => {
     showAcc();
     activeBtn(e);
+    addBtn.style.display = "none";
   });
 };
 
