@@ -1,6 +1,9 @@
 import calendar from "../calendar";
 import { CreateandPaintCostinCal } from "../costCal";
 import { CreateCostinDay } from "../costDay";
+import { getData } from "../api/getData";
+import cookieParser from "cookie-parser";
+import { getStrDate } from "../api/getStrDate";
 
 const calEl = document.getElementById("jsCalendar");
 const clsAccountEl = document.getElementById("jsClsAccount");
@@ -33,10 +36,28 @@ const activeBtn = (e) => {
 
 const init = async () => {
   await CreateandPaintCostinCal();
-  const dayEvents = await CreateCostinDay();
+  const dayEvents = (await CreateCostinDay()).events;
+  const dayPaints = (await CreateCostinDay()).paints;
 
   // For Reload Speed Up
   const eventSources = calendar.getEventSources()[0];
+
+  // Paint Day Events
+  const handleDocument = async () => {
+    const strDate = await getStrDate(calendar.getDate());
+    const titles = document.querySelectorAll(".fc-title");
+
+    const filteredDay = dayPaints.filter((day) => {
+      return strDate.id === day.id;
+    });
+
+    titles.forEach((title, index) => {
+      title.classList.add("title");
+      filteredDay[index].span.forEach((span) => {
+        title.appendChild(span);
+      });
+    });
+  };
 
   dailyBtn.addEventListener("click", (e) => {
     calendar.changeView("dayGridDay");
@@ -52,26 +73,17 @@ const init = async () => {
       events: dayEvents,
       color: "rgba(0, 0, 0, 0)",
     });
-
-    // Test
-    const titles = document.querySelectorAll(".fc-title");
-    titles.forEach((title) => {
-      let span1 = document.createElement("span");
-      span1.innerText = "hello";
-      title.appendChild(span1);
-      let span2 = document.createElement("span");
-      span2.innerText = "hello";
-      title.appendChild(span2);
-    });
+    // Paint Day Events
+    document.addEventListener("click", handleDocument);
   });
 
   calBtn.addEventListener("click", (e) => {
+    document.removeEventListener("click", handleDocument);
     calendar.changeView("dayGridMonth");
     activeBtn(e);
     showCal();
     // Remove dayEvents
     const events = calendar.getEvents();
-    console.log(events);
     events.forEach((event) => {
       event.remove();
     });

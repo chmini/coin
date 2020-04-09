@@ -28,6 +28,7 @@ export const CreateCostinDay = async () => {
 
   // Create Events Object
   const events = [];
+  const paints = [];
   data.forEach((item, index) => {
     // Initialized for Get Sum
     let inc = 0;
@@ -51,15 +52,17 @@ export const CreateCostinDay = async () => {
         textColor: incExp,
       });
 
-      // Difference
-      if (index === last - 1) {
-        events.push({
-          start: `${item.date}T00:${last < 10 ? `0${last}` : `${last}`}:00`,
-          textColor: "#7f8c8d",
-        });
+      // For Paint
+      const span = [];
+      for (let i = 0; i < 3; i++) {
+        span[i] = document.createElement("span");
       }
+      span[0].innerText = item.type;
+      span[1].innerText = item.group;
+      span[2].innerText = item.amount;
+      paints.push({ id: item.date, span });
     });
   });
 
-  return events;
+  return { events, paints };
 };

@@ -6,10 +6,10 @@ let dateId;
 
 const toStringDate = (date) => {
   const day = ["일", "월", "화", "수", "목", "금", "토"];
-  const strDay = day[date.getDay()];
-  const strDate = date.getDate();
-  const strMonth = date.getMonth() + 1;
-  const strYear = date.getFullYear();
+  const strDay = day[date.getUTCDay()];
+  const strDate = date.getUTCDate();
+  const strMonth = date.getUTCMonth() + 1;
+  const strYear = date.getUTCFullYear();
   const info = {
     id: `${strYear}-${strMonth < 10 ? `0${strMonth}` : `${strMonth}`}-${
       strDate < 10 ? `0${strDate}` : `${strDate}`
