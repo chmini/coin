@@ -1,0 +1,20 @@
+header.header
+    .header__wrapper
+        .header__column
+            a(href=routes.home)
+                i.fas.fa-money-check
+                span.siteName MONEY BOOK
+        .header__column
+            ul
+                if !loggedUser
+                    li 
+                        a(href=routes.join) join
+                    li 
+                        a(href=routes.login) login
+                else
+                    li 
+                        a(href=`${routes.moneybook}${routes.calendar}`) moneybook 
+                    li 
+                        a(href=routes.userDetail) profile
+                    li 
+                        a(href=routes.logout) logout

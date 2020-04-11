@@ -12,6 +12,7 @@ const calBtn = document.getElementById("jsCalBtn");
 const weeklyBtn = document.getElementById("jsWeeklyBtn");
 const monthlyBtn = document.getElementById("jsMonthlyBtn");
 
+const form = document.getElementById("jsForm");
 const addBtn = document.getElementById("jsAddBtn_Day");
 
 // Calendar Part show / Account Part hide
@@ -56,6 +57,11 @@ const init = async () => {
       filteredDay[index].span.forEach((span) => {
         title.appendChild(span);
       });
+    });
+
+    addBtn.addEventListener("click", () => {
+      form.querySelector("input").value = strDate.id;
+      form.submit();
     });
   };
 

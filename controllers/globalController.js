@@ -1,6 +1,7 @@
 import routes from "../routes";
 import Cost from "../models/Cost";
 
+/*
 const types = ["현금", "카드"];
 let dateId;
 
@@ -63,3 +64,4 @@ export const getStrDate = (req, res) => {
   } = req;
   res.json(toStringDate(new Date(date)));
 };
+*/

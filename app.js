@@ -4,10 +4,12 @@ import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 
-import routes from "./routes";
-import globalRouter from "./routers/globalRouter";
 import apiRouter from "./routers/apiRouter";
+import globalRouter from "./routers/globalRouter";
 import { localsMiddleware } from "./middlewares";
+import moneyBookRouter from "./routers/moneyBookRouter";
+import routes from "./routes";
+import userRouter from "./routers/userRouter";
 
 const app = express();
 
@@ -22,6 +24,8 @@ app.use(morgan("dev"));
 app.use(localsMiddleware);
 
 app.use(routes.home, globalRouter);
+app.use(routes.user, userRouter);
+app.use(routes.moneybook, moneyBookRouter);
 app.use(routes.api, apiRouter);
 
 export default app;

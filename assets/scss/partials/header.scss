@@ -1,24 +1,37 @@
 .header {
   margin-bottom: 50px;
-  .btnGroup {
+  background-color: $navy;
+  color: #fff;
+  font-size: 30px;
+  .header__wrapper {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    .btn {
-      padding: 20px;
-      background-color: #2c3e50;
-      outline: none;
-      text-align: center;
-      font-size: 27px;
-      color: #fff;
-      cursor: pointer;
-      &:hover {
-        background-color: #1e2b37;
-        border-color: #1a252f;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    .header__column {
+      &:first-child {
+        font-size: 35px;
+        .siteName {
+          margin-left: 20px;
+          font-family: $b-font;
+        }
       }
-    }
-    .active {
-      background-color: #1e2b37;
-      border-color: #1a252f;
+      &:last-child {
+        justify-self: end;
+        ul {
+          display: flex;
+          font-weight: 700;
+          text-transform: uppercase;
+          li {
+            padding: 20px 15px;
+          }
+          li:hover {
+            background-color: $dark-navy;
+          }
+        }
+      }
     }
   }
 }

@@ -18,7 +18,7 @@ const calendar = new Calendar(calendarEl, {
   },
   displayEventTime: false,
   dateClick: (info) => {
-    if (calendar.view.type === "dayGridMonth") showDetail(info.date);
+    //if (calendar.view.type === "dayGridMonth") showDetail(info.date);
   },
 });
 

@@ -1,0 +1,34 @@
+extends layouts/main
+
+block content
+    include partials/header
+
+    .Container
+        .calendar#jsCalendar
+            // Add Button in 'dayGridDay'
+            form#jsForm(action=routes.add, method="get")
+                input(type="text", name="date")
+                span.add-button#jsAddBtn_Day
+                    i.fas.fa-plus
+        .clsAccount#jsClsAccount hello
+
+    // Modal : Detail (Day)
+    .modal#jsDayModal
+        .day__container
+            .day__prevDay.passBtn#jsPrev
+                i.fas.fa-chevron-left
+            form.day__content(action=routes.add, method="get")
+                .day__column    
+                    .column__element
+                        input#jsDate(type="text", name="date")
+                    .column__element
+                        span.income 
+                        span.expend 
+                .day__column
+                    .column__element
+                        span.btn 메모쓰기
+                    .column__element    
+                        input.btn#jsAddBtn(type="submit", value="추가")
+                        span.btn#jsCloseBtn 닫기
+            .day__nextDay.passBtn#jsNext
+                i.fas.fa-chevron-right
