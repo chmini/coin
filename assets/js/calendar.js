@@ -2,9 +2,9 @@ import { Calendar } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
-import { showDetail } from "./partials/modal";
+import { showModal } from "./partials/modal";
 
-const calendarEl = document.getElementById("jsCalendar");
+const calendarEl = document.getElementById("Calendar");
 
 // Create Calendar
 const calendar = new Calendar(calendarEl, {
@@ -18,7 +18,7 @@ const calendar = new Calendar(calendarEl, {
   },
   displayEventTime: false,
   dateClick: (info) => {
-    //if (calendar.view.type === "dayGridMonth") showDetail(info.date);
+    if (calendar.view.type === "dayGridMonth") showModal(info.date);
   },
 });
 

@@ -26,7 +26,6 @@ const GITHUB_CALLBACK = "/auth/github/callback";
 // API
 const API = "/api";
 const GET_DATA = "/data";
-const GET_DATEOBJ = "/dateobj";
 
 const routes = {
   home: HOME,
@@ -47,8 +46,7 @@ const routes = {
   github: GITHUB,
   githubCallBack: GITHUB_CALLBACK,
   api: API,
-  getData: GET_DATA,
-  getDateObj: GET_DATEOBJ,
+  data: GET_DATA,
 };
 
 export default routes;

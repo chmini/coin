@@ -1,5 +1,22 @@
 extends layouts/moneybook
 
 block content
-    .Container
-        .calendar#jsCalendar
+    .calendar__container
+        .calendar#Calendar
+    
+    .modal__container#Modal
+        .moveBtn.prev
+            i.fas.fa-chevron-left
+        form.modal__content(action=moneybook+routes.add, method="get")
+            .modal__column
+                .modal__column-el#Date
+                    span.date
+                    input(type="hidden", name="date")
+                .modal__column-el#Total
+            .modal__column#Information
+            .modal__column
+                .modal__column-el
+                    button.button(type="submit") 추가
+                    button.button#CloseButton(type="button") 닫기
+        .moveBtn.next
+            i.fas.fa-chevron-right    

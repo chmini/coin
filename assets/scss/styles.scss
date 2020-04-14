@@ -1,8 +1,10 @@
 @import "./config/variables";
 @import "./config/reset";
 
+@import "./pages/add";
 @import "./pages/calendar";
 
 @import "./partials/header";
+@import "./partials/modal";
 
 @import "./main";

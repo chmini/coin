@@ -1,7 +1,9 @@
 import { getData } from "./api/getData";
 import calendar from "./calendar";
 
-export const CreateandPaintCostinCal = async () => {
+const calendarEl = document.getElementById("Calendar");
+
+const paintCal = async () => {
   // Get Data from DB
   const items = await getData();
 
@@ -68,3 +70,5 @@ export const CreateandPaintCostinCal = async () => {
     color: "rgba(0, 0, 0, 0)",
   });
 };
+
+if (calendarEl) paintCal();

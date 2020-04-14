@@ -4,23 +4,27 @@ block content
     .add__container
         .add__content
             form(action="add", method="post")
-                .content__column
+                .add_column
                     span 날짜
-                    input(type="text", name="date", placeholder="날짜", value=`${date}`, readonly)
-                .content__column
+                    span=strDate
+                    input(type="hidden", name="date", value=date)
+                .add_column
                     span 수입/지출
-                    input(type="radio", name="incExp", value="income")
-                    input(type="radio", name="incExp", value="expend")
-                .content__column
+                    .radio-items
+                        .col-6
+                            input.radio#income(type="radio", name="incExp", value="income", checked)
+                            label(for="income") 수입
+                        .col-6
+                            input.radio#expend(type="radio", name="incExp", value="expend")
+                            label(for="expend") 지출
+                .add_column
                     span 유형
                     select(name="type")
-                        each tp in types
-                            option #{tp}
-                .content__column
+                .add_column
                     span 분류
                     input(type="text", name="group", placeholder="분류")
-                .content__column
+                .add_column
                     span 금액
                     input(type="text", name="amount", placeholder="금액")
-                .content__column
+                .add_column
                     input(type="submit", value="Go")

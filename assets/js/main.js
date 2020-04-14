@@ -1,14 +1,12 @@
 import "../scss/styles.scss";
 
 import "./calendar";
-//import "./costCal";
+import "./costCal";
 //import "./costDay";
 
-//import "./api/getData";
-//import "./api/getStrDate";
+import "./api/getData";
 
-//import "./partials/modal";
-//import "./partials/header";
+import "./partials/modal";
 
 import "@fullcalendar/core/main.css";
 import "@fullcalendar/daygrid/main.css";

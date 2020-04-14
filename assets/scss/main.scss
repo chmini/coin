@@ -3,4 +3,10 @@ body {
   overflow: hidden;
   font-size: 25px;
   font-family: $p-font;
+  .income {
+    color: #2980b9;
+  }
+  .expend {
+    color: #c0392b;
+  }
 }
