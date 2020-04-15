@@ -1,30 +1,64 @@
 extends layouts/moneybook
 
 block content
-    .add__container
+    .add__container#AddContainer
         .add__content
-            form(action="add", method="post")
-                .add_column
+            form(action=moneybook+routes.add, method="post")
+                .add__column
                     span 날짜
                     span=strDate
                     input(type="hidden", name="date", value=date)
-                .add_column
+                .add__column
                     span 수입/지출
-                    .radio-items
-                        .col-6
-                            input.radio#income(type="radio", name="incExp", value="income", checked)
-                            label(for="income") 수입
-                        .col-6
-                            input.radio#expend(type="radio", name="incExp", value="expend")
-                            label(for="expend") 지출
-                .add_column
+                    .radio__container#IncomeExpend
+                        .radio__column
+                            input.radio#Income(type="radio", name="incExp", value="income")
+                            label(for="Income") 수입
+                        .radio__column
+                            input.radio#Expend(type="radio", name="incExp", value="expend")
+                            label(for="Expend") 지출
+                .add__column
                     span 유형
-                    select(name="type")
-                .add_column
-                    span 분류
-                    input(type="text", name="group", placeholder="분류")
-                .add_column
+                    .radio__container
+                        .radio__column
+                            input.radio#Cash(type="radio", name="type", value="cash")
+                            label(for="Cash") 현금
+                        .radio__column
+                            input.radio#Bank(type="radio", name="type", value="bank")
+                            label(for="Bank") 은행
+                        .radio__column
+                            input.radio#Card(type="radio", name="type", value="card")
+                            label(for="Card") 카드
+                .add__column
+                    button#GroupButton(type="button") 분류
+                    span#StrGroup
+                    input#SelectedGroup(type="hidden", name="group")
+                .add__column
                     span 금액
-                    input(type="text", name="amount", placeholder="금액")
-                .add_column
+                    input(type="text", name="amount", placeholder="금액", autocomplete="off")
+                .add__column
                     input(type="submit", value="Go")
+
+    .group__container#GroupContainer
+        .group__column#GroupIncome
+            button(type="button", value="salary") 월급
+            button(type="button", value="supplement") 부수입
+            button(type="button", value="pocket") 용돈
+            button(type="button", value="bonus") 상여
+            button(type="button", value="financial") 금융소득
+            button(type="button", value="etc") 기타
+        .group__column#GroupExpend
+            button(type="button", value="food") 식비
+            button(type="button", value="traffic") 교통/차량
+            button(type="button", value="culture") 문화생활
+            button(type="button", value="mart") 마트
+            button(type="button", value="convenience") 편의점
+            button(type="button", value="fashion") 패션
+            button(type="button", value="beauty") 미용
+            button(type="button", value="dailySupplies") 생활용품
+            button(type="button", value="residence") 주거/통신
+            button(type="button", value="health") 건강
+            button(type="button", value="education") 교육
+            button(type="button", value="occasion") 경조사/회비
+            button(type="button", value="parent") 부모님
+            button(type="button", value="etc") 기타

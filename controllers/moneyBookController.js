@@ -1,4 +1,5 @@
 import Cost from "../models/Cost";
+import routes from "../routes";
 
 const showDate = (strDate) => {
   const day = ["일", "월", "화", "수", "목", "금", "토"];
@@ -18,6 +19,12 @@ export const add = (req, res) => {
   } = req;
   const strDate = showDate(date);
   res.render("add", { strDate, date });
+};
+
+export const addtoDB = (req, res) => {
+  const { body } = req;
+  console.log(body);
+  res.redirect(`${routes.moneybook}${routes.calendar}`);
 };
 
 export const calendar = async (req, res) => {

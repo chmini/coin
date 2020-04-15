@@ -1,8 +1,8 @@
 import "../scss/styles.scss";
 
 import "./calendar";
-import "./costCal";
-//import "./costDay";
+import "./paint";
+import "./add";
 
 import "./api/getData";
 
