@@ -3,17 +3,43 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 50px;
   border-radius: 10px;
   .add__content {
+    width: 100%;
+    max-width: 1000px;
+    padding: 20px 30px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
     input {
-      font-size: inherit;
+      background-color: $white;
       font-family: $p-font;
+      font-size: inherit;
     }
     .add__column {
-      margin: 20px 0;
-      &:not(:last-child) {
+      height: 60px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      span {
+        min-width: 80px;
+      }
+      &:last-child {
+        width: 100%;
         display: grid;
-        grid-template-columns: 1fr 3fr;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 20px;
+        margin-top: 30px;
+        input[type="submit"] {
+          padding: 5px 0;
+          border-radius: 5px;
+          background-color: $navy;
+          color: #fff;
+          cursor: pointer;
+          &:hover {
+            background-color: $dark-navy;
+          }
+        }
       }
     }
   }
@@ -23,8 +49,7 @@
   width: 100%;
   display: flex;
   flex-direction: row;
-  border: 1px solid $dark-navy;
-  border-radius: 5px;
+  align-items: center;
   .radio__column {
     width: 100%;
     display: flex;
@@ -38,8 +63,12 @@
   }
   label {
     width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 4px;
-    color: $navy;
+    color: #111;
     text-align: center;
     cursor: pointer;
   }
@@ -53,8 +82,30 @@
   display: none;
   justify-content: center;
   align-items: center;
+  .group__content {
+    width: 100%;
+    max-width: 1000px;
+    padding: 20px 30px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
+  }
 }
 
 .group__column {
   display: none;
+  grid-template-columns: repeat(6, 1fr);
+  button {
+    padding: 10px 0;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    background-color: $white;
+    font-family: $p-font;
+    font-size: 22px;
+    cursor: pointer;
+    &:hover {
+      background-color: $navy;
+      color: #fff;
+    }
+  }
 }

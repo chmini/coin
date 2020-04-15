@@ -11,10 +11,11 @@ const init = () => {
     radio.addEventListener("click", (e) => {
       const currentValue = e.target.id;
       const selected = document.getElementById(`Group${currentValue}`);
-      groupContainer.childNodes.forEach((incexp) => {
-        incexp.classList.remove("show");
+      const groups = groupContainer.childNodes[0].childNodes;
+      groups.forEach((incexp) => {
+        incexp.classList.remove("grid");
       });
-      selected.classList.add("show");
+      selected.classList.add("grid");
       selected.childNodes.forEach((group) => {
         group.addEventListener("click", (e) => {
           strGroup.innerText = e.target.innerText;
@@ -25,7 +26,7 @@ const init = () => {
   });
 
   groupBtn.addEventListener("click", () => {
-    groupContainer.classList.toggle("show");
+    groupContainer.classList.toggle("flex");
   });
 };
 

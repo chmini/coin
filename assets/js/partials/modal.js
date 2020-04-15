@@ -32,7 +32,7 @@ const removeTotal = async () => {
 
 export const showModal = async (d) => {
   // show modal
-  modal.classList.add("show");
+  modal.classList.add("flex");
   // paint date
   const dateObj = createDateObj(d);
   date.querySelector("span").innerText = dateObj.content;
@@ -73,7 +73,7 @@ export const showModal = async (d) => {
 
 if (modal) {
   closeBtn.addEventListener("click", () => {
-    modal.classList.remove("show");
+    modal.classList.remove("flex");
   });
 
   moveBtn.forEach((btn) => {
