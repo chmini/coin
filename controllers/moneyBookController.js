@@ -21,10 +21,25 @@ export const add = (req, res) => {
   res.render("add", { strDate, date });
 };
 
-export const addtoDB = (req, res) => {
-  const { body } = req;
-  console.log(body);
-  res.redirect(`${routes.moneybook}${routes.calendar}`);
+export const addtoDB = async (req, res) => {
+  const {
+    body: { date, incExp, type, group, amount, action },
+  } = req;
+  try {
+    if (action === "save") {
+      await Cost.create({
+        date,
+        incExp,
+        type,
+        group,
+        amount,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    res.redirect(`${routes.moneybook}${routes.calendar}`);
+  }
 };
 
 export const calendar = async (req, res) => {

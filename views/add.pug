@@ -21,13 +21,13 @@ block content
                     span 유형
                     .radio__container
                         .radio__column
-                            input.radio#Cash(type="radio", name="type", value="cash", checked)
+                            input.radio#Cash(type="radio", name="type", value="현금", checked)
                             label(for="Cash") 현금
                         .radio__column
-                            input.radio#Bank(type="radio", name="type", value="bank")
+                            input.radio#Bank(type="radio", name="type", value="은행")
                             label(for="Bank") 은행
                         .radio__column
-                            input.radio#Card(type="radio", name="type", value="card")
+                            input.radio#Card(type="radio", name="type", value="카드")
                             label(for="Card") 카드
                 .add__column#GroupButton
                     span 분류
@@ -37,30 +37,30 @@ block content
                     span 금액
                     input(type="text", name="amount", placeholder="금액", autocomplete="off")
                 .add__column
-                    input(type="submit", value="저장")
-                    input(type="submit", value="취소")
+                    input(type="submit", name="action", value="save")
+                    input(type="submit", name="action", value="cancel") 
 
     .group__container#GroupContainer
         .group__content
             .group__column#GroupIncome
-                button(type="button", value="salary") 월급
-                button(type="button", value="supplement") 부수입
-                button(type="button", value="pocket") 용돈
-                button(type="button", value="bonus") 상여
-                button(type="button", value="financial") 금융소득
-                button(type="button", value="etc") 기타
+                button(type="button", value="월급") 월급
+                button(type="button", value="부수입") 부수입
+                button(type="button", value="용돈") 용돈
+                button(type="button", value="상여") 상여
+                button(type="button", value="금융소득") 금융소득
+                button(type="button", value="기타") 기타
             .group__column#GroupExpend
-                button(type="button", value="food") 식비
-                button(type="button", value="traffic") 교통/차량
-                button(type="button", value="culture") 문화생활
-                button(type="button", value="mart") 마트
-                button(type="button", value="convenience") 편의점
-                button(type="button", value="fashion") 패션
-                button(type="button", value="beauty") 미용
-                button(type="button", value="dailySupplies") 생활용품
-                button(type="button", value="residence") 주거/통신
-                button(type="button", value="health") 건강
-                button(type="button", value="education") 교육
-                button(type="button", value="occasion") 경조사/회비
-                button(type="button", value="parent") 부모님
-                button(type="button", value="etc") 기타
+                button(type="button", value="식비") 식비
+                button(type="button", value="교통/차량") 교통/차량
+                button(type="button", value="문화생활") 문화생활
+                button(type="button", value="마트") 마트
+                button(type="button", value="편의점") 편의점
+                button(type="button", value="패션") 패션
+                button(type="button", value="미용") 미용
+                button(type="button", value="생활용품") 생활용품
+                button(type="button", value="주거/통신") 주거/통신
+                button(type="button", value="건강") 건강
+                button(type="button", value="교육") 교육
+                button(type="button", value="경조사/회비") 경조사/회비
+                button(type="button", value="부모님") 부모님
+                button(type="button", value="기타") 기타
