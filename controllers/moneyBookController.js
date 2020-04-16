@@ -15,8 +15,7 @@ export const home = (req, res) => {
 };
 
 export const calendar = async (req, res) => {
-  const costs = await Cost.find({});
-  res.render("calendar", { costs });
+  res.render("calendar");
 };
 
 export const add = (req, res) => {
@@ -40,23 +39,24 @@ export const addtoDB = async (req, res) => {
         group,
         amount,
       });
-      const prop = await Property.find({ property });
-      const cost = Number(amount);
+      // modify whole props
+      const props = await Property.find({ property });
+      const amt = Number(amount);
       if (property === "카드") {
         await Property.findOneAndUpdate(
           { property },
-          { amount: prop[0].amount + cost }
+          { amount: props[0].amount + amt }
         );
       } else {
         if (incExp === "income") {
           await Property.findOneAndUpdate(
             { property },
-            { amount: prop[0].amount + cost }
+            { amount: props[0].amount + amt }
           );
         } else {
           await Property.findOneAndUpdate(
             { property },
-            { amount: prop[0].amount - cost }
+            { amount: props[0].amount - amt }
           );
         }
       }
@@ -70,18 +70,23 @@ export const addtoDB = async (req, res) => {
 
 export const property = async (req, res) => {
   try {
-    const property = await Property.find({});
-    res.render("property", { property });
+    const props = await Property.find({});
+    let sum = 0;
+    props.forEach((prop) => {
+      if (prop.property === "카드") sum -= prop.amount;
+      else sum += prop.amount;
+    });
+    res.render("property", { props, sum });
   } catch (error) {
     console.log(error);
   }
 };
 
-export const setProperty = async (req, res) => {
+export const firstProperty = async (req, res) => {
   const {
-    body: { property, amount },
+    body: { property: props, amount },
   } = req;
-  await property.forEach(async (item, index) => {
+  await props.forEach(async (item, index) => {
     await Property.create({
       property: item,
       amount: amount[index],
