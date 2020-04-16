@@ -1,4 +1,4 @@
-export const getData = async () => {
+export const getCost = async () => {
   let result;
   await fetch("/api/data", {
     method: "post",

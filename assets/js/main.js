@@ -4,7 +4,7 @@ import "./calendar";
 import "./paint";
 import "./add";
 
-import "./api/getData";
+import "./api/getCost";
 
 import "./partials/modal";
 

@@ -1,11 +1,11 @@
-import { getData } from "./api/getData";
+import { getCost } from "./api/getCost";
 import calendar from "./calendar";
 
 const calendarEl = document.getElementById("Calendar");
 
 const paintCal = async () => {
   // Get Data from DB
-  const items = await getData();
+  const items = await getCost();
 
   // Extract Dates from items
   const dates = [];

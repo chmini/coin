@@ -1,4 +1,4 @@
-import { getData } from "../api/getData";
+import { getCost } from "../api/getCost";
 import { createElement } from "@fullcalendar/core";
 
 const modal = document.getElementById("Modal");
@@ -40,7 +40,7 @@ export const showModal = async (d) => {
   // paint data
   let inc = 0;
   let exp = 0;
-  const data = await getData();
+  const data = await getCost();
   await removeInfo();
   await removeTotal();
   data.forEach((item) => {
@@ -48,14 +48,18 @@ export const showModal = async (d) => {
       // all item
       const columnEl = createElement("div", { className: "modal__column-el" });
       const group = createElement("span", { className: "group" }, item.group);
-      const type = createElement("span", { className: "type" }, item.type);
+      const property = createElement(
+        "span",
+        { className: "property" },
+        item.property
+      );
       const amount = createElement(
         "span",
         { className: `${item.incExp}` },
         `${item.amount}`
       );
       columnEl.appendChild(group);
-      columnEl.appendChild(type);
+      columnEl.appendChild(property);
       columnEl.appendChild(amount);
       info.appendChild(columnEl);
       // total item

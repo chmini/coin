@@ -8,6 +8,7 @@ import {
   monthly,
   addtoDB,
   property,
+  setProperty,
 } from "../controllers/moneyBookController";
 
 const moneyBookRouter = express.Router();
@@ -16,6 +17,7 @@ const moneyBookRouter = express.Router();
 moneyBookRouter.get(routes.calendar, calendar);
 
 moneyBookRouter.get(routes.property, property);
+moneyBookRouter.post(routes.property, setProperty);
 
 moneyBookRouter.get(routes.add, add);
 moneyBookRouter.post(routes.add, addtoDB);

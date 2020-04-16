@@ -9,9 +9,9 @@ const CostSchema = new mongoose.Schema({
     type: String,
     required: "incExp is required",
   },
-  type: {
+  property: {
     type: String,
-    required: "type is required",
+    required: "property is required",
   },
   group: {
     type: String,
