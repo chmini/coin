@@ -14,6 +14,7 @@ const ME = "/me";
 // MONEYBOOK
 const MONEYBOOK = "/moneybook";
 const ADD = "/add";
+const PROPERTY = "/property";
 const CALENDAR = "/calendar";
 const DAILY = "/daily";
 const WEEKLY = "/weekly";
@@ -39,6 +40,7 @@ const routes = {
   me: ME,
   moneybook: MONEYBOOK,
   add: ADD,
+  property: PROPERTY,
   calendar: CALENDAR,
   daily: DAILY,
   weekly: WEEKLY,

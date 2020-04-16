@@ -13,6 +13,11 @@ export const home = (req, res) => {
   res.render("home");
 };
 
+export const calendar = async (req, res) => {
+  const costs = await Cost.find({});
+  res.render("calendar", { costs });
+};
+
 export const add = (req, res) => {
   const {
     query: { date },
@@ -42,10 +47,7 @@ export const addtoDB = async (req, res) => {
   }
 };
 
-export const calendar = async (req, res) => {
-  const costs = await Cost.find({});
-  res.render("calendar", { costs });
-};
+export const property = (req, res) => {};
 
 export const daily = (req, res) => {
   res.render("daily");
