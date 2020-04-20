@@ -1,14 +1,15 @@
 import express from "express";
 import routes from "../routes";
 import {
-  add,
   calendar,
   daily,
   weekly,
   monthly,
-  addtoDB,
-  property,
-  firstProperty,
+  addInout,
+  addInoutDB,
+  inoutDetail,
+  totalAsset,
+  firstTotalAsset,
 } from "../controllers/moneyBookController";
 
 const moneyBookRouter = express.Router();
@@ -16,11 +17,13 @@ const moneyBookRouter = express.Router();
 // MONEYBOOK
 moneyBookRouter.get(routes.calendar, calendar);
 
-moneyBookRouter.get(routes.property, property);
-moneyBookRouter.post(routes.property, firstProperty);
+moneyBookRouter.get(routes.addInout, addInout);
+moneyBookRouter.post(routes.addInout, addInoutDB);
 
-moneyBookRouter.get(routes.add, add);
-moneyBookRouter.post(routes.add, addtoDB);
+moneyBookRouter.get(routes.totalAsset, totalAsset);
+moneyBookRouter.post(routes.totalAsset, firstTotalAsset);
+
+moneyBookRouter.get(routes.inoutDetail(), inoutDetail);
 
 moneyBookRouter.get(routes.daily, daily);
 moneyBookRouter.get(routes.weekly, weekly);

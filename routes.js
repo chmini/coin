@@ -13,8 +13,10 @@ const ME = "/me";
 
 // MONEYBOOK
 const MONEYBOOK = "/moneybook";
-const ADD = "/add";
-const PROPERTY = "/property";
+const ADD_INOUT = "/add-inout";
+const INOUT_DETAIL = "/:id";
+const EDIT_INOUT = "/edit-inout";
+const TOTAL_ASSET = "/totalAsset";
 const CALENDAR = "/calendar";
 const DAILY = "/daily";
 const WEEKLY = "/weekly";
@@ -26,7 +28,7 @@ const GITHUB_CALLBACK = "/auth/github/callback";
 
 // API
 const API = "/api";
-const GET_DATA = "/data";
+const GET_INOUTS = "/data-inout";
 
 const routes = {
   home: HOME,
@@ -39,8 +41,13 @@ const routes = {
   changePassword: CHANGE_PASSWORD,
   me: ME,
   moneybook: MONEYBOOK,
-  add: ADD,
-  property: PROPERTY,
+  addInout: ADD_INOUT,
+  inoutDetail: (id) => {
+    if (id) return `/calendar/${id}`;
+    else return INOUT_DETAIL;
+  },
+  editInout: EDIT_INOUT,
+  totalAsset: TOTAL_ASSET,
   calendar: CALENDAR,
   daily: DAILY,
   weekly: WEEKLY,
@@ -48,7 +55,7 @@ const routes = {
   github: GITHUB,
   githubCallBack: GITHUB_CALLBACK,
   api: API,
-  data: GET_DATA,
+  dataInout: GET_INOUTS,
 };
 
 export default routes;

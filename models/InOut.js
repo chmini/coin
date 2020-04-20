@@ -1,19 +1,19 @@
 import mongoose from "mongoose";
 
-const CostSchema = new mongoose.Schema({
+const InoutSchema = new mongoose.Schema({
   date: {
     type: String,
     required: "date is required",
   },
-  incExp: {
+  inout: {
     type: String,
     required: "incExp is required",
   },
-  property: {
+  asset: {
     type: String,
     required: "property is required",
   },
-  group: {
+  category: {
     type: String,
     required: "group is required",
   },
@@ -23,5 +23,5 @@ const CostSchema = new mongoose.Schema({
   },
 });
 
-const model = mongoose.model("Cost", CostSchema);
+const model = mongoose.model("Inout", InoutSchema);
 export default model;

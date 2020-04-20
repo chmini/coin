@@ -1,10 +1,10 @@
 import express from "express";
 import routes from "../routes";
-import { getData } from "../controllers/moneyBookController";
+import { getInout } from "../controllers/moneyBookController";
 
 const apiRouter = express.Router();
 
 // API
-apiRouter.post(routes.data, getData);
+apiRouter.post(routes.dataInout, getInout);
 
 export default apiRouter;

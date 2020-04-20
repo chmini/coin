@@ -3,7 +3,7 @@ extends layouts/moneybook
 block content
     .add__container#AddContainer
         .add__content
-            form(action=moneybook+routes.add, method="post")
+            form(action=moneybook+routes.addInout, method="post")
                 .add__column
                     span 날짜
                     span=strDate
@@ -12,27 +12,27 @@ block content
                     span 입출
                     .radio__container#IncomeExpend
                         .radio__column
-                            input.radio#Income(type="radio", name="incExp", value="income")
+                            input.radio#Income(type="radio", name="inout", value="income")
                             label(for="Income") 수입
                         .radio__column
-                            input.radio#Expend(type="radio", name="incExp", value="expend")
+                            input.radio#Expend(type="radio", name="inout", value="expend")
                             label(for="Expend") 지출
                 .add__column
                     span 유형
                     .radio__container
                         .radio__column
-                            input.radio#Cash(type="radio", name="property", value="현금", checked)
+                            input.radio#Cash(type="radio", name="asset", value="현금", checked)
                             label(for="Cash") 현금
                         .radio__column
-                            input.radio#Bank(type="radio", name="property", value="은행")
+                            input.radio#Bank(type="radio", name="asset", value="은행")
                             label(for="Bank") 은행
                         .radio__column
-                            input.radio#Card(type="radio", name="property", value="카드")
+                            input.radio#Card(type="radio", name="asset", value="카드")
                             label(for="Card") 카드
                 .add__column#GroupButton
                     span 분류
                     span#StrGroup
-                    input#SelectedGroup(type="hidden", name="group")
+                    input#SelectedGroup(type="hidden", name="category")
                 .add__column
                     span 금액
                     input(type="text", name="amount", placeholder="금액", autocomplete="off")

@@ -1,0 +1,32 @@
+extends layouts/moneybook
+
+block content
+    if totalAsset.length < 1
+        form(action=moneybook+routes.totalAsset, method="post")
+
+            span 현금
+            input(type="hidden", name="totalAsset", value="현금")
+            input(type="text", name="amount")
+
+            span 은행
+            input(type="hidden", name="totalAsset", value="은행")
+            input(type="text", name="amount")
+
+            input(type="hidden", name="totalAsset", value="카드")
+            input(type="hidden", name="amount", value=0)
+
+            input(type="submit", value="submit")
+    else
+        .prop__container
+            .prop__content
+                each asset in totalAsset
+                    .prop__column
+                        .column__property=asset.asset
+                        if asset.asset === "카드"
+                            .column__amount.expend #{asset.amount} 원
+                        else
+                            .column__amount.income #{asset.amount} 원
+                hr
+                .prop__column
+                    .column__title 총
+                    .column__sum #{sum} 원

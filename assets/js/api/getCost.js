@@ -1,6 +1,6 @@
 export const getCost = async () => {
   let result;
-  await fetch("/api/data", {
+  await fetch("/api/data-inout", {
     method: "post",
   })
     .then((response) => {

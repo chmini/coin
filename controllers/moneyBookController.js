@@ -1,13 +1,16 @@
-import Cost from "../models/Cost";
-import Property from "../models/Property";
+import Inout from "../models/InOut";
+import TotalAsset from "../models/TotalAsset";
 import routes from "../routes";
 
-const showDate = (strDate) => {
+const dateString = (dateCode) => {
   const day = ["일", "월", "화", "수", "목", "금", "토"];
-  const date = new Date(strDate);
-  return `${date.getMonth() + 1}월 ${date.getDate()}일 ${
-    day[date.getDay()]
-  }요일`;
+  const date = new Date(dateCode);
+
+  const strMonth = date.getMonth() + 1;
+  const strDate = date.getDate();
+  const strDay = day[date.getDay()];
+
+  return `${strMonth}월 ${strDate}일 ${strDay}요일`;
 };
 
 export const home = (req, res) => {
@@ -15,48 +18,49 @@ export const home = (req, res) => {
 };
 
 export const calendar = async (req, res) => {
-  res.render("calendar");
+  res.render("calendar", { inout: [] });
 };
 
-export const add = (req, res) => {
+export const addInout = (req, res) => {
   const {
     query: { date },
   } = req;
-  const strDate = showDate(date);
-  res.render("add", { strDate, date });
+  const strDate = dateString(date);
+  res.render("addInout", { strDate, date });
 };
 
-export const addtoDB = async (req, res) => {
+export const addInoutDB = async (req, res) => {
   const {
-    body: { date, incExp, property, group, amount, action },
+    body: { date, inout, asset, category, amount, action },
   } = req;
   try {
     if (action === "save") {
-      await Cost.create({
+      await Inout.create({
         date,
-        incExp,
-        property,
-        group,
+        inout,
+        asset,
+        category,
         amount,
       });
       // modify whole props
-      const props = await Property.find({ property });
-      const amt = Number(amount);
-      if (property === "카드") {
-        await Property.findOneAndUpdate(
-          { property },
-          { amount: props[0].amount + amt }
+      const totalAsset = await TotalAsset.find({ asset });
+      const numAmount = Number(amount);
+      console.log(totalAsset);
+      if (asset === "카드") {
+        await TotalAsset.findOneAndUpdate(
+          { asset },
+          { amount: totalAsset[0].amount + numAmount }
         );
       } else {
-        if (incExp === "income") {
-          await Property.findOneAndUpdate(
-            { property },
-            { amount: props[0].amount + amt }
+        if (inout === "income") {
+          await TotalAsset.findOneAndUpdate(
+            { asset },
+            { amount: totalAsset[0].amount + numAmount }
           );
         } else {
-          await Property.findOneAndUpdate(
-            { property },
-            { amount: props[0].amount - amt }
+          await TotalAsset.findOneAndUpdate(
+            { asset },
+            { amount: totalAsset[0].amount - numAmount }
           );
         }
       }
@@ -68,31 +72,40 @@ export const addtoDB = async (req, res) => {
   }
 };
 
-export const property = async (req, res) => {
+export const inoutDetail = async (req, res) => {
+  const {
+    params: { id },
+  } = req;
+  const inout = await Inout.findById(id);
+  const date = dateString(inout.date);
+  res.render("inoutDetail", { inout, date });
+};
+
+export const totalAsset = async (req, res) => {
   try {
-    const props = await Property.find({});
+    const totalAsset = await TotalAsset.find({});
     let sum = 0;
-    props.forEach((prop) => {
-      if (prop.property === "카드") sum -= prop.amount;
-      else sum += prop.amount;
+    totalAsset.forEach((asset) => {
+      if (asset.asset === "카드") sum -= asset.amount;
+      else sum += asset.amount;
     });
-    res.render("property", { props, sum });
+    res.render("totalAsset", { totalAsset, sum });
   } catch (error) {
     console.log(error);
   }
 };
 
-export const firstProperty = async (req, res) => {
+export const firstTotalAsset = async (req, res) => {
   const {
-    body: { property: props, amount },
+    body: { totalAsset, amount },
   } = req;
-  await props.forEach(async (item, index) => {
-    await Property.create({
-      property: item,
+  await totalAsset.forEach(async (asset, index) => {
+    await TotalAsset.create({
+      asset,
       amount: amount[index],
     });
   });
-  res.redirect(`${routes.moneybook}${routes.property}`);
+  res.redirect(`${routes.moneybook}${routes.totalAsset}`);
 };
 
 export const daily = (req, res) => {
@@ -108,7 +121,16 @@ export const monthly = (req, res) => {
 };
 
 // API
-export const getData = async (req, res) => {
-  const costs = await Cost.find({});
-  res.json(costs);
+export const getInout = async (req, res) => {
+  const {
+    query: { date },
+  } = req;
+  try {
+    let inout;
+    if (date) inout = await Inout.find({ date });
+    else inout = await Inout.find({});
+    res.json(inout);
+  } catch (error) {
+    console.log(error);
+  }
 };

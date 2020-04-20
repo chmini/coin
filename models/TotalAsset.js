@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
-const PropertySchema = new mongoose.Schema({
-  property: {
+const TotalAssetSchema = new mongoose.Schema({
+  asset: {
     type: String,
     required: "property is required",
   },
@@ -11,5 +11,5 @@ const PropertySchema = new mongoose.Schema({
   },
 });
 
-const model = mongoose.model("Property", PropertySchema);
+const model = mongoose.model("TotalAsset", TotalAssetSchema);
 export default model;

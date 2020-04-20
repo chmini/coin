@@ -1,10 +1,9 @@
-import { getCost } from "../api/getCost";
 import { createElement } from "@fullcalendar/core";
 
 const modal = document.getElementById("Modal");
 const date = document.getElementById("Date");
 const total = document.getElementById("Total");
-const info = document.getElementById("Information");
+const information = document.getElementById("Information");
 const closeBtn = document.getElementById("CloseButton");
 const moveBtn = document.querySelectorAll(".moveBtn");
 
@@ -23,49 +22,59 @@ const createDateObj = (date) => {
 };
 
 const removeInfo = async () => {
-  while (info.firstElementChild) info.removeChild(info.firstElementChild);
+  while (information.firstElementChild)
+    information.removeChild(information.firstElementChild);
 };
 
 const removeTotal = async () => {
   while (total.firstElementChild) total.removeChild(total.firstElementChild);
 };
 
-export const showModal = async (d) => {
+export const showModal = async (info) => {
   // show modal
   modal.classList.add("flex");
+
+  let result;
+  await fetch(`/api/data-inout?date=${info.dateStr}`, {
+    method: "post",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then(async (json) => {
+      result = json;
+    });
   // paint date
-  const dateObj = createDateObj(d);
+  const dateObj = createDateObj(info.date);
   date.querySelector("span").innerText = dateObj.content;
   date.querySelector("input").value = dateObj.id;
   // paint data
   let inc = 0;
   let exp = 0;
-  const data = await getCost();
   await removeInfo();
   await removeTotal();
-  data.forEach((item) => {
-    if (item.date === dateObj.id) {
-      // all item
-      const columnEl = createElement("div", { className: "modal__column-el" });
-      const group = createElement("span", { className: "group" }, item.group);
-      const property = createElement(
-        "span",
-        { className: "property" },
-        item.property
-      );
-      const amount = createElement(
-        "span",
-        { className: `${item.incExp}` },
-        `${item.amount}`
-      );
-      columnEl.appendChild(group);
-      columnEl.appendChild(property);
-      columnEl.appendChild(amount);
-      info.appendChild(columnEl);
-      // total item
-      if (item.incExp === "income") inc = inc + item.amount;
-      else exp = exp + item.amount;
-    }
+  result.forEach((item) => {
+    const link = createElement("a", { href: item._id });
+    const columnEl = createElement("div", { className: "modal__column-el" });
+    const category = createElement(
+      "span",
+      { className: "group" },
+      item.category
+    );
+    const asset = createElement("span", { className: "asset" }, item.asset);
+    const amount = createElement(
+      "span",
+      { className: `${item.inout}` },
+      `${item.amount}`
+    );
+    columnEl.appendChild(category);
+    columnEl.appendChild(asset);
+    columnEl.appendChild(amount);
+    link.appendChild(columnEl);
+    information.appendChild(link);
+    // total item
+    if (item.incExp === "income") inc = inc + item.amount;
+    else exp = exp + item.amount;
   });
   const income = createElement("span", { className: "income" }, `${inc}`);
   const expend = createElement("span", { className: "expend" }, `${exp}`);
@@ -88,7 +97,11 @@ if (modal) {
         changedDate = new Date(currentDate.setDate(currentDate.getDate() - 1));
       else
         changedDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
-      showModal(changedDate);
+      const info = {
+        date: changedDate,
+        dateStr: createDateObj(changedDate).id,
+      };
+      showModal(info);
     });
   });
 }
