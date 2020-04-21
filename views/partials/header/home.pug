@@ -7,14 +7,14 @@ header.header
         .header__column
             ul
                 if !loggedUser
-                    li 
-                        a(href=routes.join) join
-                    li 
-                        a(href=routes.login) login
+                    a(href=routes.join) 
+                        li join
+                    a(href=routes.login) 
+                        li login
                 else
-                    li 
-                        a(href=`${routes.moneybook}${routes.calendar}`) moneybook 
-                    li 
-                        a(href=routes.userDetail) profile
-                    li 
-                        a(href=routes.logout) logout
+                    a(href=`${routes.moneybook}${routes.calendar}`)  
+                        li moneybook
+                    a(href=routes.userDetail) 
+                        li profile
+                    a(href=routes.logout) 
+                        li logout
