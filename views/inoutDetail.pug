@@ -3,93 +3,76 @@ extends layouts/moneybook
 block content
     .add__container#AddContainer
         .add__content
-            form(action=moneybook+routes.editInout, method="post")
+            form(action=routes.editInout(inout.id), method="post")
                 .add__column
                     span 날짜
                     span=date
-                    input(type="hidden", name="date", value=date)
+                    input(type="hidden", name="date", value=inout.date)
                 .add__column
                     span 입출
-                    .radio__container#IncomeExpend
-                        if inout.inout === "income"
-                            .radio__column
-                                input.radio#Income(type="radio", name="inout", value="income", checked)
-                                label(for="Income") 수입
-                            .radio__column
-                                input.radio#Expend(type="radio", name="inout", value="expend")
-                                label(for="Expend") 지출
-                        else
-                            .radio__column
-                                input.radio#Income(type="radio", name="inout", value="income")
-                                label(for="Income") 수입
-                            .radio__column
-                                input.radio#Expend(type="radio", name="inout", value="expend", checked)
-                                label(for="Expend") 지출
+                    .radio__container#Inout
+                        .radio__column
+                            if inout.inout === "in"
+                                input.radio#In(type="radio", name="inout", value="in", checked)
+                            else
+                                input.radio#In(type="radio", name="inout", value="in")
+                            label(for="In") 수입
+                        .radio__column
+                            if inout.inout === "out"
+                                input.radio#Out(type="radio", name="inout", value="out", checked)
+                            else
+                                input.radio#Out(type="radio", name="inout", value="out")
+                            label(for="Out") 지출
                 .add__column
                     span 유형
                     .radio__container
-                        if inout.asset === "현금"
-                            .radio__column
+                        .radio__column
+                            if inout.asset === "현금"
                                 input.radio#Cash(type="radio", name="asset", value="현금", checked)
-                                label(for="Cash") 현금
-                            .radio__column
-                                input.radio#Bank(type="radio", name="asset", value="은행")
-                                label(for="Bank") 은행
-                            .radio__column
-                                input.radio#Card(type="radio", name="asset", value="카드")
-                                label(for="Card") 카드
-                        else if inout.asset === "은행"
-                            .radio__column
+                            else
                                 input.radio#Cash(type="radio", name="asset", value="현금")
-                                label(for="Cash") 현금
-                            .radio__column
+                            label(for="Cash") 현금
+                        .radio__column
+                            if inout.asset === "은행"
                                 input.radio#Bank(type="radio", name="asset", value="은행", checked)
-                                label(for="Bank") 은행
-                            .radio__column
-                                input.radio#Card(type="radio", name="asset", value="카드")
-                                label(for="Card") 카드
-                        else
-                            .radio__column
-                                input.radio#Cash(type="radio", name="asset", value="현금")
-                                label(for="Cash") 현금
-                            .radio__column
+                            else
                                 input.radio#Bank(type="radio", name="asset", value="은행")
-                                label(for="Bank") 은행
-                            .radio__column
+                            label(for="Bank") 은행
+                        .radio__column
+                            if inout.asset === "카드"
                                 input.radio#Card(type="radio", name="asset", value="카드", checked)
-                                label(for="Card") 카드
-                .add__column#GroupButton
+                            else
+                                input.radio#Card(type="radio", name="asset", value="카드")
+                            label(for="Card") 카드
+                .add__column#CategoryButton
                     span 분류
-                    span#StrGroup=inout.category
-                    input#SelectedGroup(type="hidden", name="category")
+                    span#StrCategory=inout.category
+                    input#SelectedCategory(type="hidden", name="category", value=inout.category)
                 .add__column
                     span 금액
                     input(type="text", name="amount", placeholder="금액", autocomplete="off", value=inout.amount)
                 .add__column
-                    input(type="submit", name="action", value="save")
-                    input(type="submit", name="action", value="cancel") 
+                    span 내용
+                    input(type="text", name="content", placeholder="내용", autocomplete="off", value=inout.content)
+                .add__column
+                    button(type="submit") update
+                    a(href=moneybook+routes.calendar)
+                        button(type="button") cancel
 
-    .group__container#GroupContainer
+    .group__container#CategoryContainer
         .group__content
-            .group__column#GroupIncome
-                button(type="button", value="월급") 월급
-                button(type="button", value="부수입") 부수입
-                button(type="button", value="용돈") 용돈
-                button(type="button", value="상여") 상여
-                button(type="button", value="금융소득") 금융소득
-                button(type="button", value="기타") 기타
-            .group__column#GroupExpend
-                button(type="button", value="식비") 식비
-                button(type="button", value="교통/차량") 교통/차량
-                button(type="button", value="문화생활") 문화생활
-                button(type="button", value="마트") 마트
-                button(type="button", value="편의점") 편의점
-                button(type="button", value="패션") 패션
-                button(type="button", value="미용") 미용
-                button(type="button", value="생활용품") 생활용품
-                button(type="button", value="주거/통신") 주거/통신
-                button(type="button", value="건강") 건강
-                button(type="button", value="교육") 교육
-                button(type="button", value="경조사/회비") 경조사/회비
-                button(type="button", value="부모님") 부모님
-                button(type="button", value="기타") 기타
+            if inout.inout === "in"
+                .group__column.grid#CategoryIn
+                    include partials/categoryIn.pug
+            else
+                .group__column#CategoryIn
+                    include partials/categoryIn.pug
+                    
+            if inout.inout === "out"
+                .group__column.grid#CategoryOut
+                    include partials/categoryOut.pug
+            else
+                .group__column#CategoryOut
+                    include partials/categoryOut.pug
+
+                    

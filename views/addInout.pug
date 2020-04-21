@@ -10,13 +10,13 @@ block content
                     input(type="hidden", name="date", value=date)
                 .add__column
                     span 입출
-                    .radio__container#IncomeExpend
+                    .radio__container#Inout
                         .radio__column
-                            input.radio#Income(type="radio", name="inout", value="income")
-                            label(for="Income") 수입
+                            input.radio#In(type="radio", name="inout", value="in", checked)
+                            label(for="In") 수입
                         .radio__column
-                            input.radio#Expend(type="radio", name="inout", value="expend")
-                            label(for="Expend") 지출
+                            input.radio#Out(type="radio", name="inout", value="out")
+                            label(for="Out") 지출
                 .add__column
                     span 유형
                     .radio__container
@@ -29,27 +29,31 @@ block content
                         .radio__column
                             input.radio#Card(type="radio", name="asset", value="카드")
                             label(for="Card") 카드
-                .add__column#GroupButton
+                .add__column#CategoryButton
                     span 분류
-                    span#StrGroup
-                    input#SelectedGroup(type="hidden", name="category")
+                    span#StrCategory
+                    input#SelectedCategory(type="hidden", name="category")
                 .add__column
                     span 금액
                     input(type="text", name="amount", placeholder="금액", autocomplete="off")
                 .add__column
-                    input(type="submit", name="action", value="save")
-                    input(type="submit", name="action", value="cancel") 
+                    span 내용
+                    input(type="text", name="content", placeholder="내용", autocomplete="off")
+                .add__column
+                    button(type="submit") save
+                    a(href=moneybook+routes.calendar)
+                        button(type="button") cancel
 
-    .group__container#GroupContainer
+    .group__container#CategoryContainer
         .group__content
-            .group__column#GroupIncome
+            .group__column.grid#CategoryIn
                 button(type="button", value="월급") 월급
                 button(type="button", value="부수입") 부수입
                 button(type="button", value="용돈") 용돈
                 button(type="button", value="상여") 상여
                 button(type="button", value="금융소득") 금융소득
                 button(type="button", value="기타") 기타
-            .group__column#GroupExpend
+            .group__column#CategoryOut
                 button(type="button", value="식비") 식비
                 button(type="button", value="교통/차량") 교통/차량
                 button(type="button", value="문화생활") 문화생활

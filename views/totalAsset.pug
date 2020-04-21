@@ -23,9 +23,9 @@ block content
                     .prop__column
                         .column__property=asset.asset
                         if asset.asset === "카드"
-                            .column__amount.expend #{asset.amount} 원
+                            .column__amount.out #{asset.amount} 원
                         else
-                            .column__amount.income #{asset.amount} 원
+                            .column__amount.in #{asset.amount} 원
                 hr
                 .prop__column
                     .column__title 총

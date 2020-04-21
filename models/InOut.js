@@ -21,6 +21,7 @@ const InoutSchema = new mongoose.Schema({
     type: Number,
     required: "amount is required",
   },
+  content: String,
 });
 
 const model = mongoose.model("Inout", InoutSchema);

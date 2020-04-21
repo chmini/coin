@@ -31,38 +31,37 @@ export const addInout = (req, res) => {
 
 export const addInoutDB = async (req, res) => {
   const {
-    body: { date, inout, asset, category, amount, action },
+    body: { date, inout, asset, category, amount, content },
   } = req;
   try {
-    if (action === "save") {
-      await Inout.create({
-        date,
-        inout,
-        asset,
-        category,
-        amount,
-      });
-      // modify whole props
-      const totalAsset = await TotalAsset.find({ asset });
-      const numAmount = Number(amount);
-      console.log(totalAsset);
-      if (asset === "카드") {
+    await Inout.create({
+      date,
+      inout,
+      asset,
+      category,
+      amount,
+      content,
+    });
+    // modify whole props
+    const totalAsset = await TotalAsset.find({ asset });
+    const numAmount = Number(amount);
+    console.log(totalAsset);
+    if (asset === "카드") {
+      await TotalAsset.findOneAndUpdate(
+        { asset },
+        { amount: totalAsset[0].amount + numAmount }
+      );
+    } else {
+      if (inout === "income") {
         await TotalAsset.findOneAndUpdate(
           { asset },
           { amount: totalAsset[0].amount + numAmount }
         );
       } else {
-        if (inout === "income") {
-          await TotalAsset.findOneAndUpdate(
-            { asset },
-            { amount: totalAsset[0].amount + numAmount }
-          );
-        } else {
-          await TotalAsset.findOneAndUpdate(
-            { asset },
-            { amount: totalAsset[0].amount - numAmount }
-          );
-        }
+        await TotalAsset.findOneAndUpdate(
+          { asset },
+          { amount: totalAsset[0].amount - numAmount }
+        );
       }
     }
   } catch (error) {
@@ -76,9 +75,29 @@ export const inoutDetail = async (req, res) => {
   const {
     params: { id },
   } = req;
-  const inout = await Inout.findById(id);
-  const date = dateString(inout.date);
-  res.render("inoutDetail", { inout, date });
+  try {
+    const inout = await Inout.findById(id);
+    const date = dateString(inout.date);
+    res.render("inoutDetail", { inout, date });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const editInoutDB = async (req, res) => {
+  const {
+    params: { id },
+    body: { date, inout, asset, category, amount, content },
+  } = req;
+  try {
+    await Inout.findByIdAndUpdate(
+      { _id: id },
+      { date, inout, asset, category, amount, content }
+    );
+    res.redirect(`${routes.moneybook}${routes.calendar}`);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const totalAsset = async (req, res) => {

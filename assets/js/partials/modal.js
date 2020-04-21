@@ -50,7 +50,7 @@ export const showModal = async (info) => {
   date.querySelector("input").value = dateObj.id;
   // paint data
   let inc = 0;
-  let exp = 0;
+  let out = 0;
   await removeInfo();
   await removeTotal();
   result.forEach((item) => {
@@ -73,14 +73,14 @@ export const showModal = async (info) => {
     link.appendChild(columnEl);
     information.appendChild(link);
     // total item
-    if (item.incExp === "income") inc = inc + item.amount;
-    else exp = exp + item.amount;
+    if (item.inout === "in") inc = inc + item.amount;
+    else out = out + item.amount;
   });
-  const income = createElement("span", { className: "income" }, `${inc}`);
-  const expend = createElement("span", { className: "expend" }, `${exp}`);
-  if (inc !== 0 || exp !== 0) {
+  const income = createElement("span", { className: "in" }, `${inc}`);
+  const outgoing = createElement("span", { className: "out" }, `${out}`);
+  if (inc !== 0 || out !== 0) {
     total.appendChild(income);
-    total.appendChild(expend);
+    total.appendChild(outgoing);
   }
 };
 

@@ -38,7 +38,7 @@ const paintCal = async () => {
 
     // Get Income Sum and Expend Sum by Date
     data[index].forEach((d) => {
-      if (d.incExp === "income") inc += d.amount;
+      if (d.inout === "in") inc += d.amount;
       else exp += d.amount;
     });
 

@@ -30,11 +30,15 @@
         grid-template-columns: repeat(2, 1fr);
         grid-gap: 20px;
         margin-top: 30px;
-        input[type="submit"] {
+        button {
+          width: 100%;
           padding: 5px 0;
+          border: none;
           border-radius: 5px;
           background-color: $navy;
           color: #fff;
+          font-size: 25px;
+          font-family: $p-font;
           font-weight: 700;
           text-transform: uppercase;
           cursor: pointer;
