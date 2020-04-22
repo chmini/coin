@@ -44,26 +44,15 @@ export const addInoutDB = async (req, res) => {
     });
 
     const totalAsset = await TotalAsset.find({ asset });
-    const numAmount = Number(amount);
-
-    if (asset === "카드") {
-      await TotalAsset.findOneAndUpdate(
-        { asset },
-        { amount: totalAsset[0].amount + numAmount }
-      );
-    } else {
-      if (inout === "in") {
-        await TotalAsset.findOneAndUpdate(
-          { asset },
-          { amount: totalAsset[0].amount + numAmount }
-        );
-      } else {
-        await TotalAsset.findOneAndUpdate(
-          { asset },
-          { amount: totalAsset[0].amount - numAmount }
-        );
+    await TotalAsset.findOneAndUpdate(
+      { asset },
+      {
+        amount:
+          inout === "in"
+            ? totalAsset[0].amount + Number(amount)
+            : totalAsset[0].amount - Number(amount),
       }
-    }
+    );
   } catch (error) {
     console.log(error);
   } finally {
@@ -90,13 +79,54 @@ export const editInout = async (req, res) => {
     body: { date, inout, asset, category, amount, content },
   } = req;
   try {
+    const prevInout = await Inout.findById(id);
     await Inout.findByIdAndUpdate(
       { _id: id },
       { date, inout, asset, category, amount, content }
     );
-    res.redirect(`${routes.moneybook}${routes.calendar}`);
+
+    const totalAsset = await TotalAsset.find({ asset });
+    if (prevInout.inout === "in" && inout === "out") {
+      await TotalAsset.findOneAndUpdate(
+        { asset },
+        {
+          amount:
+            totalAsset[0].amount - Number(prevInout.amount) - Number(amount),
+        }
+      );
+    } else if (prevInout.inout === "out" && inout === "in") {
+      await TotalAsset.findOneAndUpdate(
+        { asset },
+        {
+          amount:
+            totalAsset[0].amount + Number(prevInout.amount) + Number(amount),
+        }
+      );
+    } else {
+      if (inout === "in") {
+        // in
+        await TotalAsset.findOneAndUpdate(
+          { asset },
+          {
+            amount:
+              totalAsset[0].amount - Number(prevInout.amount) + Number(amount),
+          }
+        );
+      } else {
+        // out
+        await TotalAsset.findOneAndUpdate(
+          { asset },
+          {
+            amount:
+              totalAsset[0].amount + Number(prevInout.amount) - Number(amount),
+          }
+        );
+      }
+    }
   } catch (error) {
     console.log(error);
+  } finally {
+    res.redirect(`${routes.moneybook}${routes.calendar}`);
   }
 };
 
@@ -105,7 +135,22 @@ export const deleteInout = async (req, res) => {
     params: { id },
   } = req;
   try {
+    const prevDelInout = await Inout.findById(id);
+    const { asset, amount, inout } = prevDelInout;
+    console.log(asset, amount, inout);
+
     await Inout.findByIdAndRemove({ _id: id });
+
+    const totalAsset = await TotalAsset.find({ asset });
+    await TotalAsset.findOneAndUpdate(
+      { asset },
+      {
+        amount:
+          inout === "in"
+            ? totalAsset[0].amount - Number(amount)
+            : totalAsset[0].amount + Number(amount),
+      }
+    );
   } catch (error) {
     console.log(error);
   }
@@ -117,8 +162,7 @@ export const totalAsset = async (req, res) => {
     const totalAsset = await TotalAsset.find({});
     let sum = 0;
     totalAsset.forEach((asset) => {
-      if (asset.asset === "카드") sum -= asset.amount;
-      else sum += asset.amount;
+      if (asset.asset !== "카드") sum += asset.amount;
     });
     res.render("totalAsset", { totalAsset, sum });
   } catch (error) {
