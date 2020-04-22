@@ -10,7 +10,8 @@ import {
   inoutDetail,
   totalAsset,
   firstTotalAsset,
-  editInoutDB,
+  editInout,
+  deleteInout,
 } from "../controllers/moneyBookController";
 
 const moneyBookRouter = express.Router();
@@ -30,6 +31,8 @@ moneyBookRouter.get(routes.monthly, monthly);
 
 moneyBookRouter.get(routes.inoutDetail(), inoutDetail);
 
-moneyBookRouter.post(routes.editInout(), editInoutDB);
+moneyBookRouter.post(routes.editInout(), editInout);
+
+moneyBookRouter.get(routes.deleteInout(), deleteInout);
 
 export default moneyBookRouter;

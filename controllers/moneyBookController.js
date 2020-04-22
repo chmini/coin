@@ -42,17 +42,17 @@ export const addInoutDB = async (req, res) => {
       amount,
       content,
     });
-    // modify whole props
+
     const totalAsset = await TotalAsset.find({ asset });
     const numAmount = Number(amount);
-    console.log(totalAsset);
+
     if (asset === "카드") {
       await TotalAsset.findOneAndUpdate(
         { asset },
         { amount: totalAsset[0].amount + numAmount }
       );
     } else {
-      if (inout === "income") {
+      if (inout === "in") {
         await TotalAsset.findOneAndUpdate(
           { asset },
           { amount: totalAsset[0].amount + numAmount }
@@ -84,7 +84,7 @@ export const inoutDetail = async (req, res) => {
   }
 };
 
-export const editInoutDB = async (req, res) => {
+export const editInout = async (req, res) => {
   const {
     params: { id },
     body: { date, inout, asset, category, amount, content },
@@ -98,6 +98,18 @@ export const editInoutDB = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const deleteInout = async (req, res) => {
+  const {
+    params: { id },
+  } = req;
+  try {
+    await Inout.findByIdAndRemove({ _id: id });
+  } catch (error) {
+    console.log(error);
+  }
+  res.redirect(`${routes.moneybook}${routes.calendar}`);
 };
 
 export const totalAsset = async (req, res) => {

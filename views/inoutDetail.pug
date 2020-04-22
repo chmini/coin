@@ -55,9 +55,11 @@ block content
                     span 내용
                     input(type="text", name="content", placeholder="내용", autocomplete="off", value=inout.content)
                 .add__column
-                    button(type="submit") update
+                    button.updateBtn(type="submit") update
+                    a(href=routes.deleteInout(inout.id))
+                        button.deleteBtn(type="button") delete
                     a(href=moneybook+routes.calendar)
-                        button(type="button") cancel
+                        button.cancelBtn(type="button") cancel
 
     .group__container#CategoryContainer
         .group__content

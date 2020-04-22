@@ -13,10 +13,10 @@ const ME = "/me";
 
 // MONEYBOOK
 const MONEYBOOK = "/moneybook";
-const ADD_INOUT = "/add-inout";
+const ADD_INOUT = "/add";
 const INOUT_DETAIL = "/:id";
 const EDIT_INOUT = "/:id/edit";
-const DELETE_INOUT = "/:id/delete-inout";
+const DELETE_INOUT = "/:id/delete";
 const TOTAL_ASSET = "/totalAsset";
 const CALENDAR = "/calendar";
 const DAILY = "/daily";
@@ -51,7 +51,10 @@ const routes = {
     if (id) return `/moneybook/${id}/edit`;
     else return EDIT_INOUT;
   },
-  deleteInout: DELETE_INOUT,
+  deleteInout: (id) => {
+    if (id) return `/moneybook/${id}/delete`;
+    else return DELETE_INOUT;
+  },
   totalAsset: TOTAL_ASSET,
   calendar: CALENDAR,
   daily: DAILY,
