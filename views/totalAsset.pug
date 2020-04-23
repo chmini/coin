@@ -2,20 +2,24 @@ extends layouts/moneybook
 
 block content
     if totalAsset.length < 1
-        form(action=moneybook+routes.totalAsset, method="post")
-
-            span 현금
-            input(type="hidden", name="totalAsset", value="현금")
-            input(type="text", name="amount")
-
-            span 은행
-            input(type="hidden", name="totalAsset", value="은행")
-            input(type="text", name="amount")
-
-            input(type="hidden", name="totalAsset", value="카드")
-            input(type="hidden", name="amount", value=0)
-
-            input(type="submit", value="submit")
+        form.prop__container(action=moneybook+routes.totalAsset, method="post")
+            .prop__content
+                .prop__column
+                    .column__asset
+                        span 현금
+                    .column__amount
+                        input(type="hidden", name="totalAsset", value="현금")
+                        input(type="text", name="amount", placeholder="금액", autocomplete="off")
+                .prop__column
+                    .column__asset
+                        span 은행
+                    .column__amount
+                        input(type="hidden", name="totalAsset", value="은행")
+                        input(type="text", name="amount", placeholder="금액", autocomplete="off")
+                        input(type="hidden", name="totalAsset", value="카드")
+                        input(type="hidden", name="amount", value=0)
+                .prop__column
+                    input.saveBtn(type="submit", value="save")
     else
         .prop__container
             .prop__content
@@ -23,9 +27,9 @@ block content
                     .prop__column
                         .column__property=asset.asset
                         if asset.asset === "카드"
-                            .column__amount.out #{asset.amount} 원 예정
+                            .out #{asset.amount} 원 예정
                         else
-                            .column__amount.in #{asset.amount} 원
+                            .in #{asset.amount} 원
                 hr
                 .prop__column
                     .column__title 총

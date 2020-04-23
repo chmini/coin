@@ -1,0 +1,58 @@
+.prop__container {
+  display: flex;
+  justify-content: center;
+  .prop__content {
+    width: 100%;
+    max-width: 800px;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 30px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
+    color: $dark-navy;
+    hr {
+      width: 100%;
+      border: 1px solid $navy;
+    }
+    .prop__column {
+      display: flex;
+      div {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        &:first-child {
+          width: 15%;
+          padding: 0 10px;
+        }
+        input {
+          width: 100%;
+          background-color: $white;
+          font-size: 25px;
+          font-family: $p-font;
+          color: $dark-navy;
+        }
+      }
+      .saveBtn {
+        width: 100%;
+        padding: 5px 0;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+        background-color: $navy;
+        text-transform: uppercase;
+        font-size: 20px;
+        font-family: $p-font;
+        font-weight: 700;
+        color: #fff;
+        cursor: pointer;
+        &:hover {
+          background-color: $dark-navy;
+        }
+      }
+      .column__sum {
+        color: #757575;
+      }
+    }
+  }
+}

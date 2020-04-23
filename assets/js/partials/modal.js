@@ -67,8 +67,19 @@ export const showModal = async (info) => {
       { className: `${item.inout}` },
       `${item.amount}`
     );
+    const content = createElement(
+      "span",
+      { className: "content" },
+      item.content
+    );
     columnEl.appendChild(category);
-    columnEl.appendChild(asset);
+
+    if (item.content) {
+      columnEl.appendChild(content);
+      content.appendChild(asset);
+      asset.classList.add("small");
+    } else columnEl.appendChild(asset);
+
     columnEl.appendChild(amount);
     link.appendChild(columnEl);
     information.appendChild(link);
