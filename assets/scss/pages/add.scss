@@ -86,11 +86,11 @@
   }
 }
 
-.group__container {
+.category__container {
   display: none;
   justify-content: center;
   align-items: center;
-  .group__content {
+  .category__content {
     width: 100%;
     max-width: 1000px;
     padding: 20px 30px;
@@ -99,15 +99,22 @@
   }
 }
 
-.group__column {
+.category__column {
   display: none;
   grid-template-columns: repeat(6, 1fr);
-  button {
+  .income {
+    color: #000;
+  }
+  .spend {
+    color: #000;
+  }
+  span {
     padding: 10px 0;
     outline: none;
     border: none;
     border-radius: 5px;
     background-color: $white;
+    text-align: center;
     font-family: $p-font;
     font-size: 22px;
     cursor: pointer;

@@ -1,0 +1,86 @@
+extends layouts/moneybook
+
+block content
+    .catalog__container#Catalog
+        .catalog__content
+            form(action=routes.editCatalog(catalog.id), method="post")
+                .catalog__column
+                    span.column__title 날짜
+                    span.column__date=strDate
+                    input(type="hidden", name="date", value=catalog.date)
+                .catalog__column#Type
+                    span.column__title 입출
+                    .radio__container
+                        .radio__column
+                            if catalog.type === "income"
+                                input.radio#Income(type="radio", name="type", value="income", checked)
+                            else
+                                input.radio#Income(type="radio", name="type", value="income")
+                            label(for="Income") 수입
+                        .radio__column
+                            if catalog.type === "spend"
+                                input.radio#Spend(type="radio", name="type", value="spend", checked)
+                            else
+                                input.radio#Spend(type="radio", name="type", value="spend")
+                            label(for="Spend") 지출
+                .catalog__column
+                    span.column__title 유형
+                    .radio__container
+                        .radio__column
+                            if catalog.moneyform === "현금"
+                                input.radio#Cash(type="radio", name="moneyform", value="현금", checked)
+                            else
+                                input.radio#Cash(type="radio", name="moneyform", value="현금")
+                            label(for="Cash") 현금
+                        .radio__column
+                            if catalog.moneyform === "은행"
+                                input.radio#Bank(type="radio", name="moneyform", value="은행", checked)
+                            else
+                                input.radio#Bank(type="radio", name="moneyform", value="은행")
+                            label(for="Bank") 은행
+                        .radio__column
+                            if catalog.moneyform === "카드"
+                                input.radio#Credit(type="radio", name="moneyform", value="카드", checked)
+                            else
+                                input.radio#Credit(type="radio", name="moneyform", value="카드")
+                            label(for="Credit") 카드
+                .catalog__column#CategoryObj
+                    span.column__title 분류
+                    span.column__category#CategoryString=catalog.category
+                    input#CategoryCode(type="hidden", name="category", value=catalog.category)
+                .catalog__column
+                    span.column__title 금액
+                    input.column__amount(type="text", name="amount", placeholder="금액", value=catalog.amount, autocomplete="off")
+                .catalog__column
+                    span.column__title 내용
+                    input.column__content(type="text", name="content", placeholder="내용", value=catalog.content, autocomplete="off")
+                .catalog__column
+                    button.update-btn(type="submit") update
+                    a(href=routes.deleteCatalog(catalog.id))
+                        button.delete-btn(type="button") delete
+                    a(href=moneybook+routes.calendar)
+                        button.cancel-btn(type="button") cancel
+
+    .category__container#Category
+        .category__content
+            if catalog.type === "income"
+                .category__column.grid#CategoryIncome
+                    each cat, index in category.income
+                        span.income(class=index)=cat
+            else
+                .category__column#CategoryIncome
+                    each cat, index in category.income
+                        span.income(class=index)=cat
+                    
+            if catalog.type === "spend"
+                .category__column.grid#CategorySpend
+                    each cat, index in category.spend
+                        span.spend(class=index)=cat.p
+            else
+                .category__column#CategorySpend
+                    each cat, index in category.spend
+                        span.spend(class=index)=cat.p
+
+    .category__container#SubCategory
+        .category__content
+            .category__column#SubCategorySpend

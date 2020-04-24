@@ -1,11 +1,11 @@
-import { getCost } from "./api/getCost";
+import { getCatalog } from "./api/getCatalog";
 import calendar from "./calendar";
 
 const calendarEl = document.getElementById("Calendar");
 
 const paintCal = async () => {
   // Get Data from DB
-  const items = await getCost();
+  const items = await getCatalog();
 
   // Extract Dates from items
   const dates = [];
@@ -33,33 +33,33 @@ const paintCal = async () => {
   const events = [];
   data.forEach((item, index) => {
     // Initialized for Get Sum
-    let inc = 0;
-    let exp = 0;
+    let income = 0;
+    let spend = 0;
 
     // Get Income Sum and Expend Sum by Date
     data[index].forEach((d) => {
-      if (d.inout === "in") inc += d.amount;
-      else exp += d.amount;
+      if (d.type === "income") income += d.amount;
+      else spend += d.amount;
     });
 
     // Income
     events.push({
       start: `${filteredDates[index]}T00:00:00`,
-      title: inc,
+      title: income,
       textColor: "#2980b9",
     });
 
     // Expend
     events.push({
       start: `${filteredDates[index]}T01:00:00`,
-      title: exp,
+      title: spend,
       textColor: "#c0392b",
     });
 
     // Difference
     events.push({
       start: `${filteredDates[index]}T02:00:00`,
-      title: inc - exp,
+      title: income - spend,
       textColor: "#7f8c8d",
     });
   });

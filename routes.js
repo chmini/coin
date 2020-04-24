@@ -13,11 +13,14 @@ const ME = "/me";
 
 // MONEYBOOK
 const MONEYBOOK = "/moneybook";
-const ADD_INOUT = "/add";
-const INOUT_DETAIL = "/:id";
-const EDIT_INOUT = "/:id/edit";
-const DELETE_INOUT = "/:id/delete";
-const TOTAL_ASSET = "/totalAsset";
+// MONEYBOOK - CATALOG
+const CREATE_CATALOG = "/add";
+const CATALOG_DETAIL = "/:id";
+const EDIT_CATALOG = "/:id/edit";
+const DELETE_CATALOG = "/:id/delete";
+// MONEYBOOK - ASSETS
+const ASSETS = "/assets";
+// MONEYBOOK - VIEW
 const CALENDAR = "/calendar";
 const DAILY = "/daily";
 const WEEKLY = "/weekly";
@@ -29,7 +32,8 @@ const GITHUB_CALLBACK = "/auth/github/callback";
 
 // API
 const API = "/api";
-const GET_INOUTS = "/data-inout";
+const GET_CATALOG = "/catalog";
+const GET_CATEGORY = "/category";
 
 const routes = {
   home: HOME,
@@ -42,20 +46,20 @@ const routes = {
   changePassword: CHANGE_PASSWORD,
   me: ME,
   moneybook: MONEYBOOK,
-  addInout: ADD_INOUT,
-  inoutDetail: (id) => {
+  createCatalog: CREATE_CATALOG,
+  catalogDetail: (id) => {
     if (id) return `/moneybook/${id}`;
-    else return INOUT_DETAIL;
+    else return CATALOG_DETAIL;
   },
-  editInout: (id) => {
+  editCatalog: (id) => {
     if (id) return `/moneybook/${id}/edit`;
-    else return EDIT_INOUT;
+    else return EDIT_CATALOG;
   },
-  deleteInout: (id) => {
+  deleteCatalog: (id) => {
     if (id) return `/moneybook/${id}/delete`;
-    else return DELETE_INOUT;
+    else return DELETE_CATALOG;
   },
-  totalAsset: TOTAL_ASSET,
+  assets: ASSETS,
   calendar: CALENDAR,
   daily: DAILY,
   weekly: WEEKLY,
@@ -63,7 +67,8 @@ const routes = {
   github: GITHUB,
   githubCallBack: GITHUB_CALLBACK,
   api: API,
-  dataInout: GET_INOUTS,
+  catalog: GET_CATALOG,
+  category: GET_CATEGORY,
 };
 
 export default routes;

@@ -1,6 +1,6 @@
-export const getCost = async () => {
+export const getCategory = async () => {
   let result;
-  await fetch("/api/data-inout", {
+  await fetch(`/api/category`, {
     method: "post",
   })
     .then((response) => {

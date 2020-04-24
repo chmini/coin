@@ -1,0 +1,58 @@
+extends layouts/moneybook
+
+block content
+    .catalog__container#Catalog
+        .catalog__content
+            form(action=moneybook+routes.createCatalog, method="post")
+                .catalog__column
+                    span.column 날짜
+                    span.dateString=strDate
+                    input.dateCode(type="hidden", name="date", value=date)
+                .catalog__column#Type
+                    span.column 입출
+                    .radio__container
+                        .radio__column
+                            input.radio#Income(type="radio", name="type", value="income", checked)
+                            label(for="Income") 수입
+                        .radio__column
+                            input.radio#Spend(type="radio", name="type", value="spend")
+                            label(for="Spend") 지출
+                .catalog__column
+                    span.column 유형
+                    .radio__container
+                        .radio__column
+                            input.radio#Cash(type="radio", name="moneyform", value="현금", checked)
+                            label(for="Cash") 현금
+                        .radio__column
+                            input.radio#Bank(type="radio", name="moneyform", value="은행")
+                            label(for="Bank") 은행
+                        .radio__column
+                            input.radio#Credit(type="radio", name="moneyform", value="카드")
+                            label(for="Credit") 카드
+                .catalog__column#CategoryObj
+                    span.column 분류
+                    span.categoryString#CategoryString
+                    input.categoryCode#CategoryCode(type="hidden", name="category")
+                .catalog__column
+                    span.column 금액
+                    input.column__amount(type="text", name="amount", placeholder="금액", autocomplete="off")
+                .catalog__column
+                    span 내용
+                    input.column__content(type="text", name="content", placeholder="내용", autocomplete="off")
+                .catalog__column
+                    button.save-btn(type="submit") save
+                    a(href=moneybook+routes.calendar)
+                        button.cancel-btn(type="button") cancel
+
+    .category__container#Category
+        .category__content
+            .category__column.grid#CategoryIncome
+                each cat, index in category.income
+                    span.income(class=index)=cat
+            .category__column#CategorySpend
+                each cat, index in category.spend
+                    span.spend(class=index)=cat.p
+    
+    .category__container#SubCategory
+        .category__content
+            .category__column#SubCategorySpend

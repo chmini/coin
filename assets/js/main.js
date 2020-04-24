@@ -2,9 +2,10 @@ import "../scss/styles.scss";
 
 import "./calendar";
 import "./paint";
-import "./add";
+import "./catalog";
 
-import "./api/getCost";
+import "./api/getCatalog";
+import "./api/getCatalogbyDate";
 
 import "./partials/modal";
 

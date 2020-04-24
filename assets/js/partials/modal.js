@@ -1,11 +1,14 @@
 import { createElement } from "@fullcalendar/core";
+import { getCatalogbyDate } from "../api/getCatalogbyDate";
 
 const modal = document.getElementById("Modal");
-const date = document.getElementById("Date");
-const total = document.getElementById("Total");
-const information = document.getElementById("Information");
-const closeBtn = document.getElementById("CloseButton");
-const moveBtn = document.querySelectorAll(".moveBtn");
+const btnClose = document.getElementById("CloseBtn");
+const dateString = document.getElementById("DateString");
+const dateCode = document.getElementById("DateCode");
+const btnChangeDate = document.querySelectorAll(".changeDate");
+
+const info = document.getElementById("Info");
+const diff = document.getElementById("Diff");
 
 const createDateObj = (date) => {
   const day = ["일", "월", "화", "수", "목", "금", "토"];
@@ -21,50 +24,45 @@ const createDateObj = (date) => {
   };
 };
 
-const removeInfo = async () => {
-  while (information.firstElementChild)
-    information.removeChild(information.firstElementChild);
+const removeModalContent = async () => {
+  while (info.firstElementChild) info.removeChild(info.firstElementChild);
+  while (diff.firstElementChild) diff.removeChild(diff.firstElementChild);
 };
 
-const removeTotal = async () => {
-  while (total.firstElementChild) total.removeChild(total.firstElementChild);
-};
-
-export const showModal = async (info) => {
+export const showModal = async (obj) => {
   // show modal
   modal.classList.add("flex");
 
-  let result;
-  await fetch(`/api/data-inout?date=${info.dateStr}`, {
-    method: "post",
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .then(async (json) => {
-      result = json;
-    });
   // paint date
-  const dateObj = createDateObj(info.date);
-  date.querySelector("span").innerText = dateObj.content;
-  date.querySelector("input").value = dateObj.id;
-  // paint data
-  let inc = 0;
-  let out = 0;
-  await removeInfo();
-  await removeTotal();
-  result.forEach((item) => {
+  const dateObj = createDateObj(obj.date);
+  dateString.innerText = dateObj.content;
+  dateCode.value = obj.dateStr;
+
+  // clear modal
+  await removeModalContent();
+
+  // get catalog by date
+  const catalogs = await getCatalogbyDate(obj.dateStr);
+
+  // paint catalog in modal
+  let income = 0,
+    spend = 0;
+  catalogs.forEach((item) => {
     const link = createElement("a", { href: item._id });
-    const columnEl = createElement("div", { className: "modal__column-el" });
+    const columnEl = createElement("div", { className: "column__info" });
     const category = createElement(
       "span",
-      { className: "group" },
+      { className: "category" },
       item.category
     );
-    const asset = createElement("span", { className: "asset" }, item.asset);
+    const moneyform = createElement(
+      "span",
+      { className: "moneyform" },
+      item.moneyform
+    );
     const amount = createElement(
       "span",
-      { className: `${item.inout}` },
+      { className: `${item.type}` },
       `${item.amount}`
     );
     const content = createElement(
@@ -73,46 +71,45 @@ export const showModal = async (info) => {
       item.content
     );
     columnEl.appendChild(category);
-
-    if (item.content) {
-      columnEl.appendChild(content);
-      content.appendChild(asset);
-      asset.classList.add("small");
-    } else columnEl.appendChild(asset);
-
+    content.appendChild(moneyform);
+    columnEl.appendChild(content);
     columnEl.appendChild(amount);
     link.appendChild(columnEl);
-    information.appendChild(link);
-    // total item
-    if (item.inout === "in") inc = inc + item.amount;
-    else out = out + item.amount;
+    info.appendChild(link);
+
+    // diff
+    if (item.type === "income") income = income + item.amount;
+    else spend = spend + item.amount;
   });
-  const income = createElement("span", { className: "in" }, `${inc}`);
-  const outgoing = createElement("span", { className: "out" }, `${out}`);
-  if (inc !== 0 || out !== 0) {
-    total.appendChild(income);
-    total.appendChild(outgoing);
+  const inc = createElement("span", { className: "income" }, `${income}`);
+  const sp = createElement("span", { className: "spend" }, `${spend}`);
+  if (income !== 0 || spend !== 0) {
+    diff.appendChild(inc);
+    diff.appendChild(sp);
   }
 };
 
 if (modal) {
-  closeBtn.addEventListener("click", () => {
+  btnClose.addEventListener("click", () => {
     modal.classList.remove("flex");
   });
 
-  moveBtn.forEach((btn) => {
+  btnChangeDate.forEach((btn) => {
     btn.addEventListener("click", () => {
-      const currentDate = new Date(date.querySelector("input").value);
+      const currentDate = new Date(dateCode.value);
+
       let changedDate;
       if (btn.classList.contains("prev"))
         changedDate = new Date(currentDate.setDate(currentDate.getDate() - 1));
       else
         changedDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
-      const info = {
+
+      const obj = {
         date: changedDate,
         dateStr: createDateObj(changedDate).id,
       };
-      showModal(info);
+
+      showModal(obj);
     });
   });
 }

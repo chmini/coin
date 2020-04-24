@@ -3,8 +3,8 @@ import app from "./app";
 import dotenv from "dotenv";
 dotenv.config();
 
-import "./models/TotalAsset";
-import "./models/InOut";
+import "./models/Assets";
+import "./models/Catalog";
 
 const PORT = process.env.PORT;
 

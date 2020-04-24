@@ -1,7 +1,7 @@
-.prop__container {
+.totalAsset__container {
   display: flex;
   justify-content: center;
-  .prop__content {
+  .totalAsset__content {
     width: 100%;
     max-width: 800px;
     display: grid;
@@ -15,7 +15,7 @@
       width: 100%;
       border: 1px solid $navy;
     }
-    .prop__column {
+    .totalAsset__column {
       display: flex;
       div {
         width: 100%;
@@ -50,7 +50,7 @@
           background-color: $dark-navy;
         }
       }
-      .column__sum {
+      .sum {
         color: #757575;
       }
     }
