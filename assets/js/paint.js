@@ -3,6 +3,10 @@ import calendar from "./calendar";
 
 const calendarEl = document.getElementById("Calendar");
 
+const numberWithCommas = (x) => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
 const paintCal = async () => {
   // Get Data from DB
   const items = await getCatalog();
@@ -45,21 +49,21 @@ const paintCal = async () => {
     // Income
     events.push({
       start: `${filteredDates[index]}T00:00:00`,
-      title: income,
+      title: numberWithCommas(income),
       textColor: "#2980b9",
     });
 
     // Expend
     events.push({
       start: `${filteredDates[index]}T01:00:00`,
-      title: spend,
+      title: numberWithCommas(spend),
       textColor: "#c0392b",
     });
 
     // Difference
     events.push({
       start: `${filteredDates[index]}T02:00:00`,
-      title: income - spend,
+      title: numberWithCommas(income - spend),
       textColor: "#7f8c8d",
     });
   });

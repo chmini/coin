@@ -10,6 +10,10 @@ const btnChangeDate = document.querySelectorAll(".changeDate");
 const info = document.getElementById("Info");
 const diff = document.getElementById("Diff");
 
+const numberWithCommas = (x) => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
 const createDateObj = (date) => {
   const day = ["일", "월", "화", "수", "목", "금", "토"];
   return {
@@ -63,7 +67,7 @@ export const showModal = async (obj) => {
     const amount = createElement(
       "span",
       { className: `${item.type}` },
-      `${item.amount}`
+      `${numberWithCommas(item.amount)}`
     );
     const content = createElement(
       "span",
@@ -83,8 +87,16 @@ export const showModal = async (obj) => {
     if (item.type === "income") income = income + item.amount;
     else spend = spend + item.amount;
   });
-  const inc = createElement("span", { className: "income" }, `${income}`);
-  const sp = createElement("span", { className: "spend" }, `${spend}`);
+  const inc = createElement(
+    "span",
+    { className: "income" },
+    `${numberWithCommas(income)}`
+  );
+  const sp = createElement(
+    "span",
+    { className: "spend" },
+    `${numberWithCommas(spend)}`
+  );
   if (income !== 0 || spend !== 0) {
     diff.appendChild(inc);
     diff.appendChild(sp);

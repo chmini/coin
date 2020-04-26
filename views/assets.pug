@@ -22,22 +22,23 @@ block content
     else
         .assets__container
             .assets__content
-                .assets__column.bold 현재 총 자산
-                each asset in assets
-                    .assets__column
-                        .column__type=asset.moneyform
-                        .column__total.income=`${asset.total} 원`
-                .assets__column
-                    .column 총
-                    .column__sum=`${sum} 원`
-
-        .assets__container
-            .assets__content
                 .assets__column.bold 지출 통계
                 each spend in spendStats
                     .assets__column
                         .column__type=spend.moneyform
                         if spend.moneyform === "카드"
-                            .column__total.spend=`${spend.total} 원 예정`
+                            .column__total.spend=`${spend.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 원 예정`
                         else
-                            .column__total.spend=`${spend.total} 원`
+                            .column__total.spend=`${spend.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 원`
+                            
+        .assets__container
+            .assets__content
+                .assets__column.bold 현재 총 자산
+                each asset in assets
+                    .assets__column
+                        .column__type=asset.moneyform
+                        .column__total.income=`${asset.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 원`
+                .assets__column
+                    .column 총
+                    .column__sum=`${sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 원`
+

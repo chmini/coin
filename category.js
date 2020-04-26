@@ -66,6 +66,8 @@ const TEXTBOOK = "교재비";
 const OCCASION = "경조사/회비";
 const PRESENT = "선물";
 
+const DEPOSIT = "저축";
+
 const PARENT = "부모님";
 
 const category = {
@@ -144,7 +146,9 @@ const category = {
       c: { school: SCHOOL, academy: ACADEMY, textbook: TEXTBOOK },
     },
     occasion: { p: OCCASION, c: { present: PRESENT } },
+    deposit: { p: DEPOSIT },
     parent: { p: PARENT },
+    etc: { p: ETC },
   },
 };
 

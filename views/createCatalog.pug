@@ -34,11 +34,11 @@ block content
                     span.categoryString#CategoryString
                     input.categoryCode#CategoryCode(type="hidden", name="category")
                 .catalog__column
-                    span.column 금액
-                    input.column__amount(type="text", name="amount", placeholder="금액", autocomplete="off")
-                .catalog__column
                     span 내용
                     input.column__content(type="text", name="content", placeholder="내용", autocomplete="off")
+                .catalog__column
+                    span.column 금액
+                    input.column__amount(type="text", name="amount", placeholder="금액", autocomplete="off")
                 .catalog__column
                     button.save-btn(type="submit") save
                     a(href=moneybook+routes.calendar)
