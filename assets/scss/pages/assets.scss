@@ -1,7 +1,7 @@
-.totalAsset__container {
+.assets__container {
   display: flex;
   justify-content: center;
-  .totalAsset__content {
+  .assets__content {
     width: 100%;
     max-width: 800px;
     display: grid;
@@ -11,11 +11,7 @@
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
     color: $dark-navy;
-    hr {
-      width: 100%;
-      border: 1px solid $navy;
-    }
-    .totalAsset__column {
+    .assets__column {
       display: flex;
       div {
         width: 100%;
@@ -33,7 +29,7 @@
           color: $dark-navy;
         }
       }
-      .saveBtn {
+      .save-btn {
         width: 100%;
         padding: 5px 0;
         border: none;

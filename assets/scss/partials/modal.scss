@@ -8,7 +8,7 @@
   top: 0;
   z-index: 1;
   background-color: rgba(0, 0, 0, 0.4);
-  .moveBtn {
+  .changeDate {
     margin: 0 40px;
     color: #fff;
     font-size: 80px;
@@ -22,65 +22,55 @@
     border-radius: 20px;
     background-color: $white;
     .modal__column {
-      &:not(:first-child) {
-        margin-top: 25px;
-      }
       &:first-child {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        display: flex;
+        justify-content: space-between;
         font-size: 35px;
-        .modal__column-el {
-          &:last-child {
-            text-align: right;
-          }
+        .column__diff {
           span {
             &:last-child {
-              margin-left: 50px;
-            }
-          }
-        }
-      }
-      &:nth-child(2) {
-        .modal__column-el {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          padding: 10px 25px;
-          .content {
-            display: flex;
-            flex-direction: column;
-            .small {
-              padding-top: 10px;
-              text-align: left;
-              font-size: 16px;
-              color: #666;
-            }
-          }
-          &:hover {
-            background-color: #ddd;
-          }
-          span {
-            &:last-child {
-              grid-column: 4;
-              text-align: right;
+              margin-left: 30px;
             }
           }
         }
       }
       &:last-child {
         text-align: right;
-      }
-      .modal__column-el {
-        .button {
-          outline: none;
+        button {
           border: none;
+          outline: none;
           background-color: $white;
-          font-family: $p-font;
           font-size: 25px;
+          font-family: $p-font;
           cursor: pointer;
           &:last-child {
-            margin-left: 20px;
+            margin-left: 15px;
           }
         }
+      }
+      &:nth-child(2) {
+        div {
+          display: grid;
+          grid-template-columns: 1fr 1fr 2fr;
+          padding: 10px 25px;
+          &:hover {
+            background-color: #ddd;
+          }
+          span {
+            display: flex;
+            flex-direction: column;
+            &:last-child {
+              text-align: right;
+            }
+            span {
+              font-size: 16px;
+              align-items: end;
+            }
+          }
+        }
+      }
+      &:not(:first-child) {
+        margin-top: 25px;
       }
     }
   }

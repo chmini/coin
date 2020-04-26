@@ -35,26 +35,28 @@ export const uploadCatalog = async (req, res) => {
     body: { date, type, moneyform, category, amount, content },
   } = req;
   try {
-    await Catalog.create({
-      date,
-      type,
-      moneyform,
-      category,
-      amount,
-      content,
-    });
-    /*
-    const totalAsset = await TotalAsset.find({ asset });
-    await TotalAsset.findOneAndUpdate(
-      { asset },
-      {
-        amount:
-          inout === "in"
-            ? totalAsset[0].amount + Number(amount)
-            : totalAsset[0].amount - Number(amount),
-      }
-    );
-    */
+    // message : input your assets
+    if ((await Assets.find({})) !== []) {
+      await Catalog.create({
+        date,
+        type,
+        moneyform,
+        category,
+        amount,
+        content,
+      });
+
+      const assets = await Assets.find({ moneyform });
+      await Assets.findOneAndUpdate(
+        { moneyform },
+        {
+          total:
+            type === "income"
+              ? assets[0].total + Number(amount)
+              : assets[0].total - Number(amount),
+        }
+      );
+    }
   } catch (error) {
     console.log(error);
   } finally {
@@ -78,49 +80,47 @@ export const catalogDetail = async (req, res) => {
 export const editCatalog = async (req, res) => {
   const {
     params: { id },
-    body: { date, inout, asset, category, amount, content },
+    body: { date, type, moneyform, category, amount, content },
   } = req;
   try {
-    const prevInout = await Inout.findById(id);
-    await Inout.findByIdAndUpdate(
+    const prevCatalog = await Catalog.findById(id);
+    await Catalog.findByIdAndUpdate(
       { _id: id },
-      { date, inout, asset, category, amount, content }
+      { date, type, moneyform, category, amount, content }
     );
 
-    const totalAsset = await TotalAsset.find({ asset });
-    if (prevInout.inout === "in" && inout === "out") {
-      await TotalAsset.findOneAndUpdate(
-        { asset },
+    const assets = await Assets.find({ moneyform });
+    if (prevCatalog.type === "income" && type === "spend") {
+      await Assets.findOneAndUpdate(
+        { moneyform },
         {
-          amount:
-            totalAsset[0].amount - Number(prevInout.amount) - Number(amount),
+          total: assets[0].total - Number(prevCatalog.amount) - Number(amount),
         }
       );
-    } else if (prevInout.inout === "out" && inout === "in") {
-      await TotalAsset.findOneAndUpdate(
-        { asset },
+    } else if (prevCatalog.type === "spend" && type === "income") {
+      await Assets.findOneAndUpdate(
+        { moneyform },
         {
-          amount:
-            totalAsset[0].amount + Number(prevInout.amount) + Number(amount),
+          total: assets[0].total + Number(prevCatalog.amount) + Number(amount),
         }
       );
     } else {
-      if (inout === "in") {
-        // in
-        await TotalAsset.findOneAndUpdate(
-          { asset },
+      if (type === "in") {
+        // income
+        await Assets.findOneAndUpdate(
+          { moneyform },
           {
-            amount:
-              totalAsset[0].amount - Number(prevInout.amount) + Number(amount),
+            total:
+              assets[0].total - Number(prevCatalog.amount) + Number(amount),
           }
         );
       } else {
-        // out
-        await TotalAsset.findOneAndUpdate(
-          { asset },
+        // spend
+        await Assets.findOneAndUpdate(
+          { moneyform },
           {
-            amount:
-              totalAsset[0].amount + Number(prevInout.amount) - Number(amount),
+            total:
+              assets[0].total + Number(prevCatalog.amount) - Number(amount),
           }
         );
       }
@@ -137,20 +137,19 @@ export const deleteCatalog = async (req, res) => {
     params: { id },
   } = req;
   try {
-    const prevDelInout = await Inout.findById(id);
-    const { asset, amount, inout } = prevDelInout;
-    console.log(asset, amount, inout);
+    const prevCatalog = await Catalog.findById(id);
+    const { moneyform, amount, type } = prevCatalog;
 
-    await Inout.findByIdAndRemove({ _id: id });
+    await Catalog.findByIdAndRemove({ _id: id });
 
-    const totalAsset = await TotalAsset.find({ asset });
-    await TotalAsset.findOneAndUpdate(
-      { asset },
+    const assets = await Assets.find({ moneyform });
+    await Assets.findOneAndUpdate(
+      { moneyform },
       {
-        amount:
-          inout === "in"
-            ? totalAsset[0].amount - Number(amount)
-            : totalAsset[0].amount + Number(amount),
+        total:
+          type === "income"
+            ? assets[0].total - Number(amount)
+            : assets[0].total + Number(amount),
       }
     );
   } catch (error) {
