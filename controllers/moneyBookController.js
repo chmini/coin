@@ -2,6 +2,7 @@ import routes from "../routes";
 import category from "../category";
 import Catalog from "../models/Catalog";
 import Assets from "../models/Assets";
+import SpendStats from "../models/SpendStats";
 
 const dateString = (dateCode) => {
   const day = ["일", "월", "화", "수", "목", "금", "토"];
@@ -46,14 +47,30 @@ export const uploadCatalog = async (req, res) => {
         content,
       });
 
-      const assets = await Assets.find({ moneyform });
-      await Assets.findOneAndUpdate(
+      if (moneyform !== "카드") {
+        // assets
+        const assets = await Assets.find({ moneyform });
+        await Assets.findOneAndUpdate(
+          { moneyform },
+          {
+            total:
+              type === "income"
+                ? assets[0].total + Number(amount)
+                : assets[0].total - Number(amount),
+          }
+        );
+      }
+
+      // spendStats
+      const spendStats = await SpendStats.find({ moneyform });
+      console.log(spendStats);
+      await SpendStats.findOneAndUpdate(
         { moneyform },
         {
           total:
-            type === "income"
-              ? assets[0].total + Number(amount)
-              : assets[0].total - Number(amount),
+            type === "spend"
+              ? spendStats[0].total + Number(amount)
+              : spendStats[0].total,
         }
       );
     }
@@ -90,11 +107,18 @@ export const editCatalog = async (req, res) => {
     );
 
     const assets = await Assets.find({ moneyform });
+    const spendStats = await SpendStats.find({ moneyform });
     if (prevCatalog.type === "income" && type === "spend") {
       await Assets.findOneAndUpdate(
         { moneyform },
         {
           total: assets[0].total - Number(prevCatalog.amount) - Number(amount),
+        }
+      );
+      await SpendStats.findOneAndUpdate(
+        { moneyform },
+        {
+          total: spendStats[0].total + Number(amount),
         }
       );
     } else if (prevCatalog.type === "spend" && type === "income") {
@@ -104,8 +128,14 @@ export const editCatalog = async (req, res) => {
           total: assets[0].total + Number(prevCatalog.amount) + Number(amount),
         }
       );
+      await SpendStats.findOneAndUpdate(
+        { moneyform },
+        {
+          total: spendStats[0].total - Number(amount),
+        }
+      );
     } else {
-      if (type === "in") {
+      if (type === "income") {
         // income
         await Assets.findOneAndUpdate(
           { moneyform },
@@ -116,11 +146,20 @@ export const editCatalog = async (req, res) => {
         );
       } else {
         // spend
-        await Assets.findOneAndUpdate(
+        if (moneyform !== "카드") {
+          await Assets.findOneAndUpdate(
+            { moneyform },
+            {
+              total:
+                assets[0].total + Number(prevCatalog.amount) - Number(amount),
+            }
+          );
+        }
+        await SpendStats.findOneAndUpdate(
           { moneyform },
           {
             total:
-              assets[0].total + Number(prevCatalog.amount) - Number(amount),
+              spendStats[0].total - Number(prevCatalog.amount) + Number(amount),
           }
         );
       }
@@ -142,14 +181,30 @@ export const deleteCatalog = async (req, res) => {
 
     await Catalog.findByIdAndRemove({ _id: id });
 
-    const assets = await Assets.find({ moneyform });
-    await Assets.findOneAndUpdate(
+    if (moneyform !== "카드") {
+      // assets
+      const assets = await Assets.find({ moneyform });
+
+      await Assets.findOneAndUpdate(
+        { moneyform },
+        {
+          total:
+            type === "income"
+              ? assets[0].total - Number(amount)
+              : assets[0].total + Number(amount),
+        }
+      );
+    }
+
+    // spendStats
+    const spendStats = await SpendStats.find({ moneyform });
+    await SpendStats.findOneAndUpdate(
       { moneyform },
       {
         total:
-          type === "income"
-            ? assets[0].total - Number(amount)
-            : assets[0].total + Number(amount),
+          type === "spend"
+            ? spendStats[0].total - Number(amount)
+            : spendStats[0].total,
       }
     );
   } catch (error) {
@@ -163,9 +218,12 @@ export const assets = async (req, res) => {
     const assets = await Assets.find({});
     let sum = 0;
     assets.forEach((asset) => {
-      if (asset.moneyform !== "카드") sum += asset.total;
+      sum += asset.total;
     });
-    res.render("assets", { assets, sum });
+
+    const spendStats = await SpendStats.find({});
+
+    res.render("assets", { assets, sum, spendStats });
   } catch (error) {
     console.log(error);
   }
@@ -175,14 +233,25 @@ export const firstAssets = async (req, res) => {
   const {
     body: { moneyform, total },
   } = req;
-  console.log(moneyform, total);
 
   await moneyform.forEach(async (moneyform, index) => {
+    // assets
     await Assets.create({
       moneyform,
       total: total[index],
     });
+    // spendstats
+    await SpendStats.create({
+      moneyform,
+      total: 0,
+    });
   });
+
+  await SpendStats.create({
+    moneyform: "카드",
+    total: 0,
+  });
+
   res.redirect(`${routes.moneybook}${routes.assets}`);
 };
 

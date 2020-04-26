@@ -9,6 +9,10 @@ body {
   .spend {
     color: #c0392b;
   }
+  .bold {
+    color: $navy;
+    font-weight: 700;
+  }
   .flex {
     display: flex;
   }

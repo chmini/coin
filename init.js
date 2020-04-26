@@ -5,6 +5,7 @@ dotenv.config();
 
 import "./models/Assets";
 import "./models/Catalog";
+import "./models/SpendStats";
 
 const PORT = process.env.PORT;
 

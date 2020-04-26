@@ -71,8 +71,10 @@ export const showModal = async (obj) => {
       item.content
     );
     columnEl.appendChild(category);
-    content.appendChild(moneyform);
-    columnEl.appendChild(content);
+    if (item.content) {
+      content.appendChild(moneyform);
+      columnEl.appendChild(content);
+    } else columnEl.appendChild(moneyform);
     columnEl.appendChild(amount);
     link.appendChild(columnEl);
     info.appendChild(link);

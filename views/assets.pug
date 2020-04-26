@@ -4,6 +4,7 @@ block content
     if assets.length < 1
         form.assets__container(action=moneybook+routes.assets, method="post")
             .assets__content
+                .assets__column.bold 현재 자산 입력
                 .assets__column
                     .column__moneyform
                         span 현금
@@ -16,20 +17,27 @@ block content
                     .column__total
                         input(type="hidden", name="moneyform", value="은행")
                         input(type="text", name="total", placeholder="금액", autocomplete="off")
-                        input(type="hidden", name="moneyform", value="카드")
-                        input(type="hidden", name="total", value=0)
                 .assets__column
                     button.save-btn(type="submit") save
     else
         .assets__container
             .assets__content
+                .assets__column.bold 현재 총 자산
                 each asset in assets
                     .assets__column
                         .column__type=asset.moneyform
-                        if asset.moneyform === "카드"
-                            .column__total.spend=`${asset.total} 원 예정`
-                        else
-                            .column__total.income=`${asset.total} 원`
+                        .column__total.income=`${asset.total} 원`
                 .assets__column
                     .column 총
                     .column__sum=`${sum} 원`
+
+        .assets__container
+            .assets__content
+                .assets__column.bold 지출 통계
+                each spend in spendStats
+                    .assets__column
+                        .column__type=spend.moneyform
+                        if spend.moneyform === "카드"
+                            .column__total.spend=`${spend.total} 원 예정`
+                        else
+                            .column__total.spend=`${spend.total} 원`
