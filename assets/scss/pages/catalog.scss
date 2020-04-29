@@ -14,14 +14,6 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-      input {
-        background-color: $white;
-        font-family: $p-font;
-        font-size: inherit;
-      }
-      span {
-        min-width: 80px;
-      }
       &:last-child {
         width: 100%;
         display: flex;
@@ -45,6 +37,16 @@
           &:hover {
             background-color: $dark-navy;
           }
+        }
+      }
+      input {
+        background-color: $white;
+        font-family: $p-font;
+        font-size: inherit;
+      }
+      span {
+        &:first-child {
+          min-width: 80px;
         }
       }
     }

@@ -5,11 +5,11 @@ block content
         .catalog__content
             form(action=moneybook+routes.createCatalog, method="post")
                 .catalog__column
-                    span.column 날짜
+                    span 날짜
                     span.dateString=strDate
                     input.dateCode(type="hidden", name="date", value=date)
                 .catalog__column#Type
-                    span.column 입출
+                    span 입출
                     .radio__container
                         .radio__column
                             input.radio#Income(type="radio", name="type", value="income", checked)
@@ -30,14 +30,16 @@ block content
                             input.radio#Credit(type="radio", name="moneyform", value="카드")
                             label(for="Credit") 카드
                 .catalog__column#CategoryObj
-                    span.column 분류
+                    span 분류
                     span.categoryString#CategoryString
+                    span.subCategoryString#SubCategoryString
                     input.categoryCode#CategoryCode(type="hidden", name="category")
+                    input.subCategoryCode#SubCategoryCode(type="hidden", name="subCategory")
                 .catalog__column
                     span 내용
                     input.column__content(type="text", name="content", placeholder="내용", autocomplete="off")
                 .catalog__column
-                    span.column 금액
+                    span 금액
                     input.column__amount(type="text", name="amount", placeholder="금액", autocomplete="off")
                 .catalog__column
                     button.save-btn(type="submit") save

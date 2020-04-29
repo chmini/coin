@@ -17,6 +17,7 @@ const CatalogSchema = new mongoose.Schema({
     type: String,
     required: "category is required",
   },
+  subCategory: String,
   amount: {
     type: Number,
     required: "amount is required",

@@ -17,16 +17,20 @@ const removeCategory = (value) => {
 };
 
 const paintCategory = async (e) => {
-  // paint category
-  const catString = document.getElementById("CategoryString");
-  const catCode = document.getElementById("CategoryCode");
-  catString.innerText = e.target.innerText;
-  catCode.value = e.target.innerText;
-
   //
   const category = await getCategory();
   const con = e.target.classList;
   const cat = category[con[0]][con[1]];
+
+  // paint category
+  const catString = document.getElementById("CategoryString");
+  const catCode = document.getElementById("CategoryCode");
+  const subCatString = document.getElementById("SubCategoryString");
+  const subCatCode = document.getElementById("SubCategoryCode");
+  catString.innerText = e.target.innerText;
+  catCode.value = e.target.innerText;
+  subCatString.innerText = "";
+  subCatCode.value = "";
 
   const subCat = document.getElementById("SubCategorySpend");
   while (subCat.firstElementChild) subCat.removeChild(subCat.firstElementChild);
@@ -37,8 +41,9 @@ const paintCategory = async (e) => {
     for (const key in cat.c) {
       const span = createElement("span", { className: key }, cat.c[key]);
       span.addEventListener("click", (e) => {
-        catString.innerText = e.target.innerText;
-        catCode.value = e.target.innerText;
+        //cat.p
+        subCatString.innerText = `/${e.target.innerText}`;
+        subCatCode.value = e.target.innerText;
       });
       subCat.appendChild(span);
     }

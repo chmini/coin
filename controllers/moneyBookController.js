@@ -33,7 +33,7 @@ export const createCatalog = (req, res) => {
 
 export const uploadCatalog = async (req, res) => {
   const {
-    body: { date, type, moneyform, category, amount, content },
+    body: { date, type, moneyform, category, subCategory, amount, content },
   } = req;
   try {
     // message : input your assets
@@ -43,6 +43,7 @@ export const uploadCatalog = async (req, res) => {
         type,
         moneyform,
         category,
+        subCategory,
         amount,
         content,
       });
@@ -97,13 +98,13 @@ export const catalogDetail = async (req, res) => {
 export const editCatalog = async (req, res) => {
   const {
     params: { id },
-    body: { date, type, moneyform, category, amount, content },
+    body: { date, type, moneyform, category, subCategory, amount, content },
   } = req;
   try {
     const prevCatalog = await Catalog.findById(id);
     await Catalog.findByIdAndUpdate(
       { _id: id },
-      { date, type, moneyform, category, amount, content }
+      { date, type, moneyform, category, subCategory, amount, content }
     );
 
     const assets = await Assets.find({ moneyform });

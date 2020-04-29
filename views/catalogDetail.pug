@@ -5,11 +5,11 @@ block content
         .catalog__content
             form(action=routes.editCatalog(catalog.id), method="post")
                 .catalog__column
-                    span.column__title 날짜
+                    span 날짜
                     span.column__date=strDate
                     input(type="hidden", name="date", value=catalog.date)
                 .catalog__column#Type
-                    span.column__title 입출
+                    span 입출
                     .radio__container
                         .radio__column
                             if catalog.type === "income"
@@ -24,7 +24,7 @@ block content
                                 input.radio#Spend(type="radio", name="type", value="spend")
                             label(for="Spend") 지출
                 .catalog__column
-                    span.column__title 유형
+                    span 유형
                     .radio__container
                         .radio__column
                             if catalog.moneyform === "현금"
@@ -45,15 +45,17 @@ block content
                                 input.radio#Credit(type="radio", name="moneyform", value="카드")
                             label(for="Credit") 카드
                 .catalog__column#CategoryObj
-                    span.column__title 분류
-                    span.column__category#CategoryString=catalog.category
+                    span 분류
+                    span#CategoryString=catalog.category
+                    span#SubCategoryString=`/${catalog.subCategory}`
                     input#CategoryCode(type="hidden", name="category", value=catalog.category)
+                    input#SubCategoryCode(type="hidden", name="subCategory", value=catalog.subCategory)
                 .catalog__column
-                    span.column__title 금액
-                    input.column__amount(type="text", name="amount", placeholder="금액", value=catalog.amount, autocomplete="off")
-                .catalog__column
-                    span.column__title 내용
+                    span 내용
                     input.column__content(type="text", name="content", placeholder="내용", value=catalog.content, autocomplete="off")
+                .catalog__column
+                    span 금액
+                    input.column__amount(type="text", name="amount", placeholder="금액", value=catalog.amount, autocomplete="off")
                 .catalog__column
                     button.update-btn(type="submit") update
                     a(href=routes.deleteCatalog(catalog.id))
