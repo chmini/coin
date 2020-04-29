@@ -59,6 +59,11 @@ export const showModal = async (obj) => {
       { className: "category" },
       item.category
     );
+    const subCategory = createElement(
+      "span",
+      { className: "subCategory" },
+      item.subCategory
+    );
     const moneyform = createElement(
       "span",
       { className: "moneyform" },
@@ -74,7 +79,12 @@ export const showModal = async (obj) => {
       { className: "content" },
       item.content
     );
-    columnEl.appendChild(category);
+    if (item.subCategory) {
+      subCategory.appendChild(category);
+      columnEl.appendChild(subCategory);
+    } else {
+      columnEl.appendChild(category);
+    }
     if (item.content) {
       content.appendChild(moneyform);
       columnEl.appendChild(content);
