@@ -34,6 +34,7 @@ const GITHUB_CALLBACK = "/auth/github/callback";
 const API = "/api";
 const GET_CATALOG = "/catalog";
 const GET_CATEGORY = "/category";
+const GET_STATS = "/stats";
 
 const routes = {
   home: HOME,
@@ -69,6 +70,7 @@ const routes = {
   api: API,
   catalog: GET_CATALOG,
   category: GET_CATEGORY,
+  stats: GET_STATS,
 };
 
 export default routes;

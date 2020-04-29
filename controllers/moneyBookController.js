@@ -264,7 +264,7 @@ export const weekly = (req, res) => {
   res.render("weekly");
 };
 
-export const monthly = (req, res) => {
+export const monthly = async (req, res) => {
   res.render("monthly");
 };
 
@@ -283,4 +283,12 @@ export const getCatalog = async (req, res) => {
 
 export const getCategory = (req, res) => {
   res.json(category);
+};
+
+export const getStats = async (req, res) => {
+  const stats = await Catalog.aggregate([
+    { $match: { type: "spend" } },
+    { $group: { _id: "$category", total: { $sum: "$amount" } } },
+  ]);
+  res.json(stats);
 };

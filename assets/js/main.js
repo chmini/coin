@@ -3,6 +3,7 @@ import "../scss/styles.scss";
 import "./calendar";
 import "./paint";
 import "./catalog";
+import "./chart";
 
 import "./api/getCatalog";
 import "./api/getCatalogbyDate";
