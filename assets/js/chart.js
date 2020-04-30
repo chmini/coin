@@ -1,5 +1,6 @@
 import Chart from "chart.js";
 import { getStats } from "./api/getStats";
+import { numberWithCommas } from "./main";
 
 const ctx = document.getElementById("myChart");
 

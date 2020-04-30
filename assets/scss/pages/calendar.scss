@@ -7,18 +7,18 @@
     td {
       cursor: pointer;
     }
-    .fc-event-container {
+  }
+  .fc-event-container {
+    z-index: -1;
+    .fc-day-grid-event {
       z-index: -1;
-      .fc-day-grid-event {
+      .fc-content {
         z-index: -1;
-        .fc-content {
-          z-index: -1;
-          text-align: right;
-          .title {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            font-size: 30px;
-          }
+        text-align: right;
+        .title {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          font-size: 30px;
         }
       }
     }

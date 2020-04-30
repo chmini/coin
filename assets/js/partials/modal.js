@@ -1,5 +1,6 @@
 import { createElement } from "@fullcalendar/core";
 import { getCatalogbyDate } from "../api/getCatalogbyDate";
+import { numberWithCommas } from "../main";
 
 const modal = document.getElementById("Modal");
 const btnClose = document.getElementById("CloseBtn");
@@ -9,10 +10,6 @@ const btnChangeDate = document.querySelectorAll(".changeDate");
 
 const info = document.getElementById("Info");
 const diff = document.getElementById("Diff");
-
-const numberWithCommas = (x) => {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-};
 
 const createDateObj = (date) => {
   const day = ["일", "월", "화", "수", "목", "금", "토"];

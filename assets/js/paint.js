@@ -1,11 +1,8 @@
 import { getCatalog } from "./api/getCatalog";
 import calendar from "./calendar";
+import { numberWithCommas } from "./main";
 
 const calendarEl = document.getElementById("Calendar");
-
-const numberWithCommas = (x) => {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-};
 
 const paintCal = async () => {
   // Get Data from DB

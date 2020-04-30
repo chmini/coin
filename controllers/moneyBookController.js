@@ -98,7 +98,16 @@ export const catalogDetail = async (req, res) => {
 export const editCatalog = async (req, res) => {
   const {
     params: { id },
-    body: { date, type, moneyform, category, subCategory, amount, content },
+    body: {
+      date,
+      type,
+      moneyform,
+      category,
+      subCategory,
+      amount,
+      content,
+      action,
+    },
   } = req;
   try {
     const prevCatalog = await Catalog.findById(id);
@@ -256,8 +265,28 @@ export const firstAssets = async (req, res) => {
   res.redirect(`${routes.moneybook}${routes.assets}`);
 };
 
-export const daily = (req, res) => {
-  res.render("daily");
+export const daily = async (req, res) => {
+  const catalog = await Catalog.find({}).sort({ date: -1 });
+  const date = await Catalog.aggregate([{ $group: { _id: "$date" } }]).sort({
+    _id: -1,
+  });
+  let income, spend;
+  date.forEach((el) => {
+    (income = 0), (spend = 0);
+    el.strDate = dateString(el._id);
+    catalog.forEach((log) => {
+      if (el._id === log.date) {
+        if (log.type === "spend") {
+          spend += log.amount;
+        } else {
+          income += log.amount;
+        }
+      }
+    });
+    el.income = income;
+    el.spend = spend;
+  });
+  res.render("daily", { catalog, date });
 };
 
 export const weekly = (req, res) => {

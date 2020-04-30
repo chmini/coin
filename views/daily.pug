@@ -1,4 +1,24 @@
 extends layouts/moneybook
 
 block content
-    h1 daily
+    .daily__container
+        .daily__content
+            each d in date
+                .daily__group
+                    .daily__header
+                        .daily__date=d.strDate
+                        .daily__diff
+                            span.income=d.income
+                            span.spend=d.spend
+                    .daily__catalog
+                        each log in catalog
+                            if log.date === d._id
+                                a.daily__catalog-column(href=moneybook+`/${log._id}`)
+                                    .column=log.category
+                                        span.column__subCategory=log.subCategory
+                                    .column=log.content
+                                        span.column__moneyform=log.moneyform
+                                    if log.type === "income"
+                                        .column.income=log.amount
+                                    else
+                                        .column.spend=log.amount
