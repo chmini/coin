@@ -26,6 +26,7 @@ moneyBookRouter.get(routes.assets, assets);
 moneyBookRouter.post(routes.assets, firstAssets);
 
 moneyBookRouter.get(routes.daily, daily);
+
 moneyBookRouter.get(routes.weekly, weekly);
 moneyBookRouter.get(routes.monthly, monthly);
 

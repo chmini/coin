@@ -68,6 +68,8 @@ const PRESENT = "선물";
 
 const DEPOSIT = "저축";
 
+const INSURANCE = "보험";
+
 const PARENT = "부모님";
 
 const category = {
@@ -147,6 +149,7 @@ const category = {
     },
     occasion: { p: OCCASION, c: { present: PRESENT } },
     deposit: { p: DEPOSIT },
+    insurance: { p: INSURANCE },
     parent: { p: PARENT },
     etc: { p: ETC },
   },

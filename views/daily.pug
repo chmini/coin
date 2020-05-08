@@ -1,24 +1,66 @@
 extends layouts/moneybook
 
 block content
+    .movePageBtns
+        a(href=moneybook+routes.createCatalog+`?date=${dateCode}`)
+            button
+                i.fas.fa-plus
+        a(href="#top")
+            button
+                i.fas.fa-angle-double-up
+        a(href="#bottom")
+            button
+                i.fas.fa-angle-double-down
+
     .daily__container
+        .changeDatePanel
+            .currentDate
+                span.currentYear #{year}년
+                span.currentMonth #{month}월
+            .changeBtns
+                a(href=moneybook+routes.daily+`?year=${month - 1 === 0 ? year -= 1 : year}&month=${month - 1 === 0 ? month = 12 : month - 1}`)
+                    button.prevMonth
+                        i.fas.fa-chevron-left
+                a(href=moneybook+routes.daily)
+                    button.current
+                        i.far.fa-dot-circle
+                a(href=moneybook+routes.daily+`?year=${month + 1 === 13 ? year += 1 : year}&month=${month + 1 === 13 ? month = 1 : month + 1}`)
+                    button.nextMonth
+                        i.fas.fa-chevron-right
         .daily__content
-            each d in date
+            each c, i in catalog
                 .daily__group
                     .daily__header
-                        .daily__date=d.strDate
-                        .daily__diff
-                            span.income=d.income
-                            span.spend=d.spend
+                        .daily__date=c._id.date
+                        if i < catalog.length-1 && c._id.date === catalog[i+1]._id.date
+                            .daily__diff
+                                if c._id.type === "income"
+                                    span.income=c.total
+                                    span.spend=catalog[i+1].total
+                                if c._id.type === "spend"
+                                    span.income=catalog[i+1].total
+                                    span.spend=c.total
+                            - i = i + 1
+                        else
+                            .daily__diff
+                                if c._id.type === "income"
+                                    span.income=c.total
+                                    span.spend=0
+                                if c._id.type === "spend"
+                                    span.income=0
+                                    span.spend=c.total
                     .daily__catalog
-                        each log in catalog
-                            if log.date === d._id
-                                a.daily__catalog-column(href=moneybook+`/${log._id}`)
-                                    .column=log.category
-                                        span.column__subCategory=log.subCategory
-                                    .column=log.content
-                                        span.column__moneyform=log.moneyform
-                                    if log.type === "income"
-                                        .column.income=log.amount
-                                    else
-                                        .column.spend=log.amount
+                        each ca in c.catalog
+                            a.daily__catalog-column(href=moneybook+`/${ca._id}`)
+                                .column=ca.category
+                                    span.column__subCategory=ca.subCategory
+                                if ca.content
+                                    .column=ca.content
+                                        span.column__moneyform=ca.moneyform
+                                else
+                                    .column=ca.moneyform
+                                if ca.type === "income"
+                                    .column.income=ca.amount
+                                else
+                                    .column.spend=ca.amount
+        #bottom

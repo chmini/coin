@@ -15,6 +15,10 @@ const dateString = (dateCode) => {
   return `${strMonth}월 ${strDate}일 ${strDay}요일`;
 };
 
+const toDoubleDigit = (num) => {
+  return num < 10 ? `0${num}` : num;
+};
+
 export const home = (req, res) => {
   res.render("home");
 };
@@ -50,28 +54,23 @@ export const uploadCatalog = async (req, res) => {
 
       if (moneyform !== "카드") {
         // assets
-        const assets = await Assets.find({ moneyform });
         await Assets.findOneAndUpdate(
           { moneyform },
           {
-            total:
-              type === "income"
-                ? assets[0].total + Number(amount)
-                : assets[0].total - Number(amount),
+            $inc: {
+              total: type === "spend" ? -Number(amount) : Number(amount),
+            },
           }
         );
       }
 
       // spendStats
-      const spendStats = await SpendStats.find({ moneyform });
-      console.log(spendStats);
       await SpendStats.findOneAndUpdate(
         { moneyform },
         {
-          total:
-            type === "spend"
-              ? spendStats[0].total + Number(amount)
-              : spendStats[0].total,
+          $inc: {
+            total: type === "spend" ? Number(amount) : 0,
+          },
         }
       );
     }
@@ -98,82 +97,56 @@ export const catalogDetail = async (req, res) => {
 export const editCatalog = async (req, res) => {
   const {
     params: { id },
-    body: {
-      date,
-      type,
-      moneyform,
-      category,
-      subCategory,
-      amount,
-      content,
-      action,
-    },
+    body: { type, moneyform, category, subCategory, amount, content },
   } = req;
   try {
     const prevCatalog = await Catalog.findById(id);
+    const {
+      moneyform: prevMoneyform,
+      type: prevType,
+      amount: prevAmount,
+    } = prevCatalog;
+
     await Catalog.findByIdAndUpdate(
       { _id: id },
-      { date, type, moneyform, category, subCategory, amount, content }
+      { type, moneyform, category, subCategory, amount, content }
     );
 
-    const assets = await Assets.find({ moneyform });
-    const spendStats = await SpendStats.find({ moneyform });
-    if (prevCatalog.type === "income" && type === "spend") {
+    if (prevMoneyform !== "카드") {
       await Assets.findOneAndUpdate(
-        { moneyform },
+        { moneyform: prevMoneyform },
         {
-          total: assets[0].total - Number(prevCatalog.amount) - Number(amount),
+          $inc: {
+            total: prevType === "spend" ? prevAmount : -prevAmount,
+          },
         }
       );
-      await SpendStats.findOneAndUpdate(
-        { moneyform },
-        {
-          total: spendStats[0].total + Number(amount),
-        }
-      );
-    } else if (prevCatalog.type === "spend" && type === "income") {
-      await Assets.findOneAndUpdate(
-        { moneyform },
-        {
-          total: assets[0].total + Number(prevCatalog.amount) + Number(amount),
-        }
-      );
-      await SpendStats.findOneAndUpdate(
-        { moneyform },
-        {
-          total: spendStats[0].total - Number(amount),
-        }
-      );
-    } else {
-      if (type === "income") {
-        // income
-        await Assets.findOneAndUpdate(
-          { moneyform },
-          {
-            total:
-              assets[0].total - Number(prevCatalog.amount) + Number(amount),
-          }
-        );
-      } else {
-        // spend
-        if (moneyform !== "카드") {
-          await Assets.findOneAndUpdate(
-            { moneyform },
-            {
-              total:
-                assets[0].total + Number(prevCatalog.amount) - Number(amount),
-            }
-          );
-        }
-        await SpendStats.findOneAndUpdate(
-          { moneyform },
-          {
-            total:
-              spendStats[0].total - Number(prevCatalog.amount) + Number(amount),
-          }
-        );
-      }
     }
+
+    await SpendStats.findOneAndUpdate(
+      { moneyform: prevMoneyform },
+      {
+        $inc: {
+          total: prevType === "spend" ? -prevAmount : 0,
+        },
+      }
+    );
+
+    if (moneyform !== "카드") {
+      await Assets.findOneAndUpdate(
+        { moneyform },
+        {
+          $inc: {
+            total: type === "spend" ? -Number(amount) : Number(amount),
+          },
+        }
+      );
+    }
+
+    await SpendStats.findOneAndUpdate(
+      { moneyform },
+      { $inc: { total: type === "spend" ? Number(amount) : 0 } }
+    );
   } catch (error) {
     console.log(error);
   } finally {
@@ -185,6 +158,7 @@ export const deleteCatalog = async (req, res) => {
   const {
     params: { id },
   } = req;
+
   try {
     const prevCatalog = await Catalog.findById(id);
     const { moneyform, amount, type } = prevCatalog;
@@ -192,35 +166,29 @@ export const deleteCatalog = async (req, res) => {
     await Catalog.findByIdAndRemove({ _id: id });
 
     if (moneyform !== "카드") {
-      // assets
-      const assets = await Assets.find({ moneyform });
-
       await Assets.findOneAndUpdate(
         { moneyform },
         {
-          total:
-            type === "income"
-              ? assets[0].total - Number(amount)
-              : assets[0].total + Number(amount),
+          $inc: {
+            total: type === "spend" ? Number(amount) : -Number(amount),
+          },
         }
       );
     }
 
-    // spendStats
-    const spendStats = await SpendStats.find({ moneyform });
     await SpendStats.findOneAndUpdate(
       { moneyform },
       {
-        total:
-          type === "spend"
-            ? spendStats[0].total - Number(amount)
-            : spendStats[0].total,
+        $inc: {
+          total: type === "spend" ? -Number(amount) : 0,
+        },
       }
     );
   } catch (error) {
     console.log(error);
+  } finally {
+    res.redirect(`${routes.moneybook}${routes.calendar}`);
   }
-  res.redirect(`${routes.moneybook}${routes.calendar}`);
 };
 
 export const assets = async (req, res) => {
@@ -266,27 +234,66 @@ export const firstAssets = async (req, res) => {
 };
 
 export const daily = async (req, res) => {
-  const catalog = await Catalog.find({}).sort({ date: -1 });
-  const date = await Catalog.aggregate([{ $group: { _id: "$date" } }]).sort({
-    _id: -1,
-  });
-  let income, spend;
-  date.forEach((el) => {
-    (income = 0), (spend = 0);
-    el.strDate = dateString(el._id);
-    catalog.forEach((log) => {
-      if (el._id === log.date) {
-        if (log.type === "spend") {
-          spend += log.amount;
-        } else {
-          income += log.amount;
-        }
-      }
+  const {
+    query: { year, month },
+  } = req;
+
+  try {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth() + 1;
+
+    // to link (create catalog)
+    const dateCode = `${currentYear}-${toDoubleDigit(
+      currentMonth
+    )}-${toDoubleDigit(currentDate.getDate())}`;
+
+    let pattern, dpYear, dpMonth;
+    if (year && month) {
+      pattern = `${year}-${toDoubleDigit(Number(month))}`;
+      dpYear = Number(year);
+      dpMonth = Number(month);
+    } else {
+      pattern = `${currentYear}-${toDoubleDigit(currentMonth)}`;
+      dpYear = currentYear;
+      dpMonth = currentMonth;
+    }
+
+    // find in catalog DB by date
+    const catalog = await Catalog.aggregate([
+      {
+        $match: { date: { $regex: pattern } },
+      },
+      {
+        $group: {
+          _id: { date: "$date", type: "$type" },
+          total: { $sum: "$amount" },
+        },
+      },
+      {
+        $lookup: {
+          from: "catalogs",
+          localField: "_id.date",
+          foreignField: "date",
+          as: "catalog",
+        },
+      },
+    ]).sort({ _id: -1 });
+
+    catalog.forEach((el) => {
+      el._id.date = dateString(el._id.date);
     });
-    el.income = income;
-    el.spend = spend;
-  });
-  res.render("daily", { catalog, date });
+
+    // render
+    res.render("daily", {
+      catalog,
+      dateCode,
+      month: dpMonth,
+      year: dpYear,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const weekly = (req, res) => {

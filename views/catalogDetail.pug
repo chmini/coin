@@ -47,7 +47,10 @@ block content
                 .catalog__column#CategoryObj
                     span 분류
                     span#CategoryString=catalog.category
-                    span#SubCategoryString=`/${catalog.subCategory}`
+                    if catalog.subCategory
+                        span#SubCategoryString=`/${catalog.subCategory}`
+                    else
+                        span#SubCategoryString
                     input#CategoryCode(type="hidden", name="category", value=catalog.category)
                     input#SubCategoryCode(type="hidden", name="subCategory", value=catalog.subCategory)
                 .catalog__column

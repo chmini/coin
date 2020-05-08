@@ -1,6 +1,69 @@
+.movePageBtns {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  button {
+    width: 60px;
+    height: 60px;
+    padding: 0;
+    margin: 0 10px;
+    border: none;
+    outline: none;
+    border-radius: 50%;
+    box-shadow: 0 10px 6px rgba(50, 50, 93, 0.1);
+    background-color: $navy;
+    color: #fff;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 700;
+    transition: 1s;
+    cursor: pointer;
+    &:hover {
+      background-color: $dark-navy;
+    }
+  }
+}
+
 .daily__container {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  .changeDatePanel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+    .currentDate {
+      margin-bottom: 20px;
+      font-size: 40px;
+      font-weight: 700;
+      .currentMonth {
+        margin-left: 15px;
+      }
+    }
+    .changeBtns {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 10px;
+      button {
+        width: 100%;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+        background-color: $navy;
+        font-size: 20px;
+        color: #fff;
+        cursor: pointer;
+        &:hover {
+          background-color: $dark-navy;
+        }
+        i {
+          text-align: center;
+        }
+      }
+    }
+  }
   .daily__content {
     width: 100%;
     max-width: 1200px;
