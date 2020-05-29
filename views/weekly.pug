@@ -1,4 +1,14 @@
 extends layouts/moneybook
 
 block content
-    h1 weekly
+    .weekly__container
+        .weekly__content
+            each w in weeks
+                .weekly-list
+                    .list
+                        span.fDate=w.f  
+                        |  ~ 
+                        span.lDate=w.l 
+                    .list
+                        span.income #{w.i} 원     
+                        span.spend #{w.s} 원

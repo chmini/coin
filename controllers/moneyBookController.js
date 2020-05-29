@@ -4,6 +4,24 @@ import Catalog from "../models/Catalog";
 import Assets from "../models/Assets";
 import SpendStats from "../models/SpendStats";
 
+const numberWithCommas = (x) => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+const mkDateCode = (d) => {
+  const date = new Date(d);
+  return `${date.getFullYear()}-${
+    date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1
+  }-${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}`;
+};
+
+const mkWeekly = (d) => {
+  const date = new Date(d);
+  return `${
+    date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1
+  }.${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}`;
+};
+
 const dateString = (dateCode) => {
   const day = ["일", "월", "화", "수", "목", "금", "토"];
   const date = new Date(dateCode);
@@ -282,6 +300,10 @@ export const daily = async (req, res) => {
 
     catalog.forEach((el) => {
       el._id.date = dateString(el._id.date);
+      el.total = numberWithCommas(el.total);
+      el.catalog.forEach((e) => {
+        e.amount = numberWithCommas(e.amount);
+      });
     });
 
     // render
@@ -296,8 +318,76 @@ export const daily = async (req, res) => {
   }
 };
 
-export const weekly = (req, res) => {
-  res.render("weekly");
+const printDate = (date) => {
+  const obj = new Object();
+  const arr = [];
+  obj.f = mkDateCode(date);
+  let f, l;
+  l = new Date(date.setDate(date.getDate() + 6));
+  obj.l = mkDateCode(l);
+  arr.push(obj);
+  const ld = new Date(l.getFullYear(), l.getMonth() + 1, 0);
+  while (l.getMonth() <= ld.getMonth()) {
+    const obj = new Object();
+    f = new Date(l.setDate(l.getDate() + 1));
+    obj.f = mkDateCode(f);
+    l = new Date(f.setDate(f.getDate() + 6));
+    obj.l = mkDateCode(l);
+    arr.push(obj);
+    if (l.getDate() === ld.getDate()) break;
+  }
+  return arr;
+};
+
+export const weekly = async (req, res) => {
+  const date = new Date();
+  try {
+    let flDate;
+    const currentfirstDate = new Date(date.setDate(1));
+    if (currentfirstDate.getDay() !== 0) {
+      const prevlastDate = new Date(
+        currentfirstDate.setDate(currentfirstDate.getDate() - 1)
+      );
+      const prevfirstDate = new Date(
+        prevlastDate.setDate(prevlastDate.getDate() - prevlastDate.getDay())
+      );
+      flDate = printDate(prevfirstDate);
+    } else {
+      flDate = printDate(currentfirstDate);
+    }
+
+    const catalog = await Catalog.find({
+      date: { $gte: flDate[0].f, $lte: flDate[flDate.length - 1].l },
+    }).sort({ date: 1 });
+
+    const aa = [];
+    flDate.forEach((e, i) => {
+      const arr = [];
+      catalog.forEach((el) => {
+        if (el.date >= e.f && el.date <= e.l) {
+          arr.push(el);
+        }
+      });
+      e.f = mkWeekly(e.f);
+      e.l = mkWeekly(e.l);
+      aa.push(arr);
+    });
+
+    aa.forEach((el, index) => {
+      let i = 0,
+        s = 0;
+      el.forEach((e) => {
+        if (e.type === "income") i += e.amount;
+        else s += e.amount;
+      });
+      flDate[index].i = numberWithCommas(i);
+      flDate[index].s = numberWithCommas(s);
+    });
+
+    res.render("weekly", { weeks: flDate });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const monthly = async (req, res) => {

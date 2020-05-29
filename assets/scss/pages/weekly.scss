@@ -1,0 +1,24 @@
+.weekly__container {
+  display: flex;
+  justify-content: center;
+  font-size: 30px;
+  .weekly__content {
+    width: 100%;
+    max-width: 1000px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 6px rgba(50, 50, 93, 0.1);
+    .weekly-list {
+      display: flex;
+      justify-content: space-between;
+      .list {
+        padding: 10px;
+        &:last-child {
+          width: 500px;
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    }
+  }
+}

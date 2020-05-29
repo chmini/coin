@@ -35,20 +35,20 @@ block content
                         if i < catalog.length-1 && c._id.date === catalog[i+1]._id.date
                             .daily__diff
                                 if c._id.type === "income"
-                                    span.income=c.total
-                                    span.spend=catalog[i+1].total
+                                    span.income.m=c.total
+                                    span.spend.m=catalog[i+1].total
                                 if c._id.type === "spend"
-                                    span.income=catalog[i+1].total
-                                    span.spend=c.total
+                                    span.income.m=catalog[i+1].total
+                                    span.spend.m=c.total
                             - i = i + 1
                         else
                             .daily__diff
                                 if c._id.type === "income"
-                                    span.income=c.total
-                                    span.spend=0
+                                    span.income.m=c.total
+                                    span.spend.m=0
                                 if c._id.type === "spend"
-                                    span.income=0
-                                    span.spend=c.total
+                                    span.income.m=0
+                                    span.spend.m=c.total
                     .daily__catalog
                         each ca in c.catalog
                             a.daily__catalog-column(href=moneybook+`/${ca._id}`)
@@ -60,7 +60,7 @@ block content
                                 else
                                     .column=ca.moneyform
                                 if ca.type === "income"
-                                    .column.income=ca.amount
+                                    .column.income.m=ca.amount
                                 else
-                                    .column.spend=ca.amount
+                                    .column.spend.m=ca.amount
         #bottom

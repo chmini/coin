@@ -2,6 +2,13 @@ body {
   background-color: $white;
   font-size: 25px;
   font-family: $p-font;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  input {
+    font-family: $p-font;
+    font-size: 22px;
+  }
   .empty__div {
     height: 120px;
   }
