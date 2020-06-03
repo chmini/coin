@@ -4,12 +4,13 @@
   display: none;
   justify-content: center;
   align-items: center;
-  position: absolute;
+  position: fixed;
   top: 0;
   z-index: 1;
   background-color: rgba(0, 0, 0, 0.4);
-  .changeDate {
-    margin: 0 40px;
+  .js-modal__button-prev,
+  .js-modal__button-next {
+    padding: 0 40px;
     color: #fff;
     font-size: 80px;
     cursor: pointer;
@@ -26,7 +27,7 @@
         display: flex;
         justify-content: space-between;
         font-size: 35px;
-        .column__diff {
+        .js-column__total {
           span {
             &:last-child {
               margin-left: 30px;

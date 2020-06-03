@@ -2,24 +2,32 @@ import { createElement } from "@fullcalendar/core";
 import { getCatalogbyDate } from "../api/getCatalogbyDate";
 import { numberWithCommas } from "../main";
 
+// MODAL
 const modal = document.getElementById("Modal");
-const btnClose = document.getElementById("CloseBtn");
-const dateString = document.getElementById("DateString");
-const dateCode = document.getElementById("DateCode");
-const btnChangeDate = document.querySelectorAll(".changeDate");
-
+// COLUMN DATE
+const dateString = document.querySelector(".js-date__string");
+const dateCode = document.querySelector(".js-date__code");
+// COLUMN TOTAL
+const total = document.querySelector(".js-column__total");
+// COLUMN INFO
 const info = document.getElementById("Info");
-const diff = document.getElementById("Diff");
+// BUTTONS
+const btnClose = document.querySelector(".js-modal__button-close");
+const btnPrevDate = document.querySelector(".js-modal__button-prev");
+const btnNextDate = document.querySelector(".js-modal__button-next");
+
+// FUNCTIONS
+const toDoubleDigit = (num) => {
+  return num < 10 ? `0${num}` : num;
+};
 
 const createDateObj = (date) => {
   const day = ["일", "월", "화", "수", "목", "금", "토"];
   return {
-    id: `${date.getFullYear()}-${
-      date.getMonth() + 1 < 10
-        ? `0${date.getMonth() + 1}`
-        : `${date.getMonth() + 1}`
-    }-${date.getDate() < 10 ? `0${date.getDate()}` : `${date.getDate()}`}`,
-    content: `${date.getMonth() + 1}월 ${date.getDate()}일 ${
+    code: `${date.getFullYear()}-${toDoubleDigit(
+      date.getMonth() + 1
+    )}-${toDoubleDigit(date.getDate())}`,
+    str: `${date.getMonth() + 1}월 ${date.getDate()}일 ${
       day[date.getDay()]
     }요일`,
   };
@@ -27,30 +35,26 @@ const createDateObj = (date) => {
 
 const removeModalContent = async () => {
   while (info.firstElementChild) info.removeChild(info.firstElementChild);
-  while (diff.firstElementChild) diff.removeChild(diff.firstElementChild);
+  while (total.firstElementChild) total.removeChild(total.firstElementChild);
 };
 
 export const showModal = async (obj) => {
-  // show modal
+  // SHOW MODAL
   modal.classList.add("flex");
-
-  // paint date
+  // PAINT DATE
   const dateObj = createDateObj(obj.date);
-  dateString.innerText = dateObj.content;
-  dateCode.value = obj.dateStr;
-
-  // clear modal
+  dateString.innerText = dateObj.str;
+  dateCode.value = dateObj.code;
+  // CLEAR MODAL
   await removeModalContent();
-
-  // get catalog by date
+  // GET CATALOG BY DATE
   const catalogs = await getCatalogbyDate(obj.dateStr);
-
-  // paint catalog in modal
-  let income = 0,
-    spend = 0;
+  // PAINT CATALOG IN MODAL
+  let i = 0,
+    s = 0;
   catalogs.forEach((item) => {
     const link = createElement("a", { href: item._id });
-    const columnEl = createElement("div", { className: "column__info" });
+    const columnInfo = createElement("div", { className: "column__info" });
     const category = createElement(
       "span",
       { className: "category" },
@@ -76,61 +80,69 @@ export const showModal = async (obj) => {
       { className: "content" },
       item.content
     );
+    // APPEND TO HTML
+    // SUBCATAEGORY EXIST WHETHER
     if (item.subCategory) {
       subCategory.appendChild(category);
-      columnEl.appendChild(subCategory);
+      columnInfo.appendChild(subCategory);
     } else {
-      columnEl.appendChild(category);
+      columnInfo.appendChild(category);
     }
+    // CONTENT EXIST WHETHER
     if (item.content) {
       content.appendChild(moneyform);
-      columnEl.appendChild(content);
-    } else columnEl.appendChild(moneyform);
-    columnEl.appendChild(amount);
-    link.appendChild(columnEl);
+      columnInfo.appendChild(content);
+    } else {
+      columnInfo.appendChild(moneyform);
+    }
+    columnInfo.appendChild(amount);
+    link.appendChild(columnInfo);
     info.appendChild(link);
-
-    // diff
-    if (item.type === "income") income = income + item.amount;
-    else spend = spend + item.amount;
+    // TOTAL
+    if (item.type === "income") i = i + item.amount;
+    else s = s + item.amount;
   });
-  const inc = createElement(
+  const income = createElement(
     "span",
     { className: "income" },
-    `${numberWithCommas(income)}`
+    `${numberWithCommas(i)}`
   );
-  const sp = createElement(
+  const spend = createElement(
     "span",
     { className: "spend" },
-    `${numberWithCommas(spend)}`
+    `${numberWithCommas(s)}`
   );
-  if (income !== 0 || spend !== 0) {
-    diff.appendChild(inc);
-    diff.appendChild(sp);
-  }
+  total.appendChild(income);
+  total.appendChild(spend);
 };
 
 if (modal) {
+  // CLOSE BUTTON EVENT
   btnClose.addEventListener("click", () => {
     modal.classList.remove("flex");
   });
-
-  btnChangeDate.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const currentDate = new Date(dateCode.value);
-
-      let changedDate;
-      if (btn.classList.contains("prev"))
-        changedDate = new Date(currentDate.setDate(currentDate.getDate() - 1));
-      else
-        changedDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
-
-      const obj = {
-        date: changedDate,
-        dateStr: createDateObj(changedDate).id,
-      };
-
-      showModal(obj);
-    });
+  // PREVIOUS BUTTON EVENT
+  btnPrevDate.addEventListener("click", () => {
+    const currentDate = new Date(dateCode.value);
+    const changedDate = new Date(
+      currentDate.setDate(currentDate.getDate() - 1)
+    );
+    const obj = {
+      date: changedDate,
+      dateStr: createDateObj(changedDate).code,
+    };
+    showModal(obj);
+  });
+  // NEXT BUTTON EVENT
+  btnNextDate.addEventListener("click", () => {
+    const currentDate = new Date(dateCode.value);
+    const changedDate = new Date(
+      currentDate.setDate(currentDate.getDate() + 1)
+    );
+    const obj = {
+      date: changedDate,
+      dateStr: createDateObj(changedDate).code,
+    };
+    showModal(obj);
   });
 }

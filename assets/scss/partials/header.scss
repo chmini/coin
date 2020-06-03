@@ -1,10 +1,10 @@
 .header {
   width: 100%;
   position: fixed;
+  top: 0;
   background-color: $navy;
   color: #fff;
   font-size: 30px;
-  margin-bottom: 50px;
   z-index: 10;
   .header__wrapper {
     width: 100%;

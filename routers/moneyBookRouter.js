@@ -13,27 +13,28 @@ import {
   editCatalog,
   deleteCatalog,
 } from "../controllers/moneyBookController";
+import { onlyPrivate } from "../middlewares";
 
 const moneyBookRouter = express.Router();
 
 // MONEYBOOK
-moneyBookRouter.get(routes.calendar, calendar);
+moneyBookRouter.get(routes.calendar, onlyPrivate, calendar);
 
-moneyBookRouter.get(routes.createCatalog, createCatalog);
-moneyBookRouter.post(routes.createCatalog, uploadCatalog);
+moneyBookRouter.get(routes.createCatalog, onlyPrivate, createCatalog);
+moneyBookRouter.post(routes.createCatalog, onlyPrivate, uploadCatalog);
 
-moneyBookRouter.get(routes.assets, assets);
-moneyBookRouter.post(routes.assets, firstAssets);
+moneyBookRouter.get(routes.assets, onlyPrivate, assets);
+moneyBookRouter.post(routes.assets, onlyPrivate, firstAssets);
 
-moneyBookRouter.get(routes.daily, daily);
+moneyBookRouter.get(routes.daily, onlyPrivate, daily);
 
-moneyBookRouter.get(routes.weekly, weekly);
-moneyBookRouter.get(routes.monthly, monthly);
+moneyBookRouter.get(routes.weekly, onlyPrivate, weekly);
+moneyBookRouter.get(routes.monthly, onlyPrivate, monthly);
 
-moneyBookRouter.get(routes.catalogDetail(), catalogDetail);
+moneyBookRouter.get(routes.catalogDetail(), onlyPrivate, catalogDetail);
 
-moneyBookRouter.post(routes.editCatalog(), editCatalog);
+moneyBookRouter.post(routes.editCatalog(), onlyPrivate, editCatalog);
 
-moneyBookRouter.get(routes.deleteCatalog(), deleteCatalog);
+moneyBookRouter.get(routes.deleteCatalog(), onlyPrivate, deleteCatalog);
 
 export default moneyBookRouter;

@@ -6,11 +6,11 @@ import { showModal } from "./partials/modal";
 
 const calendarEl = document.getElementById("Calendar");
 
-// Create Calendar
+// CREATE CALENDAR
 const calendar = new Calendar(calendarEl, {
-  // 5 plugins
+  // 5 PLUGINS
   plugins: [interactionPlugin, dayGridPlugin],
-  // View Setting
+  // VIEW SETTING
   views: {
     dayGrid: {
       titleFormat: { month: "long" },
@@ -23,7 +23,6 @@ const calendar = new Calendar(calendarEl, {
 });
 
 if (calendarEl) {
-  // render calendar
   calendar.render();
 }
 

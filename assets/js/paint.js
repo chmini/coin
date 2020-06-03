@@ -5,21 +5,21 @@ import { numberWithCommas } from "./main";
 const calendarEl = document.getElementById("Calendar");
 
 const paintCal = async () => {
-  // Get Data from DB
+  // GET DATA FROM DB
   const items = await getCatalog();
 
-  // Extract Dates from items
+  // EXTRACT DATES FROM ITEMS
   const dates = [];
   items.forEach((item) => {
     dates.push(item.date);
   });
 
-  // Filter Overlapped Dates
+  // FILTER OVERLAPPED DATES
   const filteredDates = dates.filter((item, index, self) => {
     return self.indexOf(item) === index;
   });
 
-  // Categorized by Date
+  // CATEGORIZED BY DATE
   const data = [];
   filteredDates.forEach((date, index) => {
     data.push([]);
@@ -30,34 +30,34 @@ const paintCal = async () => {
     });
   });
 
-  // Create Events Object
+  // CREATE EVENTS OBJECT
   const events = [];
   data.forEach((item, index) => {
-    // Initialized for Get Sum
+    // INITIALIZED FOR GET SUM
     let income = 0;
     let spend = 0;
 
-    // Get Income Sum and Expend Sum by Date
+    // GET INCOME SUM AND EXPEND SUM BY DATE
     data[index].forEach((d) => {
       if (d.type === "income") income += d.amount;
       else spend += d.amount;
     });
 
-    // Income
+    // INCOME
     events.push({
       start: `${filteredDates[index]}T00:00:00`,
       title: numberWithCommas(income),
       textColor: "#2980b9",
     });
 
-    // Expend
+    // EXPEND
     events.push({
       start: `${filteredDates[index]}T01:00:00`,
       title: numberWithCommas(spend),
       textColor: "#c0392b",
     });
 
-    // Difference
+    // DIFFERENCE
     events.push({
       start: `${filteredDates[index]}T02:00:00`,
       title: numberWithCommas(income - spend),
@@ -65,7 +65,7 @@ const paintCal = async () => {
     });
   });
 
-  // Paint Cost in Calendar
+  // PAINT COST IN CALENDAR
   calendar.addEventSource({
     events: events,
     color: "rgba(0, 0, 0, 0)",

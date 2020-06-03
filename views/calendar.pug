@@ -5,19 +5,19 @@ block content
         .calendar#Calendar
     
     .modal__container#Modal
-        .changeDate.prev
+        .js-modal__button-prev
             i.fas.fa-chevron-left
         form.modal__content(action=moneybook+routes.createCatalog, method="get")
             .modal__column
                 .column__date
-                    span.dateString#DateString
-                    input.dateCode#DateCode(type="hidden", name="date")
-                .column__diff#Diff
+                    span.js-date__string
+                    input.js-date__code(type="hidden", name="date")
+                .js-column__total
             .modal__column#Info
             .modal__column
                 .column
                 .column
-                    button.create.btn(type="submit") 추가
-                    button.close.btn#CloseBtn(type="button") 닫기
-        .changeDate.next
+                    button(type="submit") 추가
+                    button.js-modal__button-close(type="button") 닫기
+        .js-modal__button-next
             i.fas.fa-chevron-right    
